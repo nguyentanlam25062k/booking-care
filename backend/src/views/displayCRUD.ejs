@@ -33,6 +33,7 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Address</th>
+                <th>Action</th>
             </tr>
             <% for(var i=0; i < data.length; i++) { %>
             <tr>
@@ -40,6 +41,10 @@
                 <td><%= data[i].firstName %></td>
                 <td><%= data[i].lastName %></td>
                 <td><%= data[i].address %></td>
+                <td>
+                    <a href="/edit-crud?id=<%= data[i].id %>" type="button">Edit</a>
+                    <button type="button">Delete</button>
+                </td>
             </tr>
             <% } %>
         </table>
