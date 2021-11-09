@@ -45,10 +45,8 @@ class Login extends Component {
             }
             if (data && data.errCode === 0) {
                 this.props.userLoginSuccess(data.user)
-                console.log('login success!')
             }
         } catch (e) {
-            console.log(e.response.data.message)
             if (e.response) {
                 if (e.response.data) {
                     this.setState({
@@ -56,7 +54,6 @@ class Login extends Component {
                     })
                 }
             }
-            console.log(e)
         }
     }
 
