@@ -19,8 +19,6 @@ class UserManage extends Component {
                 arrUsers: response.users
             })
         }
-
-        console.log(response)
     }
 
     render() {
