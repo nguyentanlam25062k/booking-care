@@ -160,6 +160,7 @@ let updateUser = (data) => {
                     errMessage: 'Missing required parameter'
                 })
             }
+
             let user = await db.User.findOne({
                 where: { id: data.id },
                 raw: false
