@@ -11,12 +11,12 @@ let handleLogin = async (req, res) => {
     }
 
     let userData = await userService.handleUserLogin(email, password)
-    let { errCode, errMessage: message } = userData
+    let { errCode, errMessage: message, user } = userData
 
     return res.status(200).json({
         errCode,
         message,
-        user: userData.user ? userData : {}
+        user: user ? user : {}
     })
 }
 

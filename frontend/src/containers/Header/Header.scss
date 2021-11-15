@@ -21,10 +21,15 @@
 
     i {
       font-size: $base-size + 1px;
+
     }
   }
 
   .languages {
+    .welcome {
+      margin-right: 10px;
+    }
+
     .language-en {
       margin-right: 15px;
       margin-left : 10px;
