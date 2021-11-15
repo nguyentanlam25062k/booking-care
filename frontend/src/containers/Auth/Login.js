@@ -64,6 +64,7 @@ class Login extends Component {
     }
 
     render() {
+        console.log(this.state)
         return (
             <div className='login-background'>
                 <div className='login-container'>
@@ -90,7 +91,7 @@ class Login extends Component {
                                     onChange={(e) => this.handleOnChangePassword(e)}
                                 />
                                 <span onClick={() => this.handleShowHidePassword()}>
-                                    <i className={this.state.isShowPassword ? 'far fa-eye' : 'fas fa-eye-sl'}></i>
+                                    <i className={this.state.isShowPassword ? 'fas fa-eye' : 'fas fa-eye-slash'}></i>
                                 </span>
                             </div>
                         </div>
