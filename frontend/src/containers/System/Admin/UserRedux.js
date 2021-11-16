@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { getAllCodeService } from '../../../services/userService'
 import { LANGUAGES } from '../../../utils'
+import * as actions from '../../../store/actions'
+
 class UserRedux extends Component {
     constructor(props) {
         super(props)
@@ -11,22 +13,32 @@ class UserRedux extends Component {
         }
     }
     async componentDidMount() {
-        try {
-            let res = await getAllCodeService('gender')
-            if (res && res.errCode === 0) {
-                this.setState({
-                    genderArr: res.data
-                })
-            }
-            // console.log('>>> check res:', res)
-        } catch (e) {
-            console.log(e)
+        this.props.getGenderStart()
+        // try {
+        //     let res = await getAllCodeService('gender')
+        //     if (res && res.errCode === 0) {
+        //         this.setState({
+        //             genderArr: res.data
+        //         })
+        //     }
+        //     // console.log('>>> check res:', res)
+        // } catch (e) {
+        //     console.log(e)
+        // }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.genderRedux !== this.props.genderRedux) {
+            this.setState({
+                genderArr: this.props.genderRedux
+            })
         }
     }
 
     render() {
         let genders = this.state.genderArr
         let language = this.props.language
+        console.log('check props from redux:', this.props.genderRedux)
         return (
             <div className='user-redux-container'>
                 <div className='title'>Learn Redux with hoi dan IT Chanel</div>
@@ -126,12 +138,15 @@ class UserRedux extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        language: state.app.language
+        language: state.app.language,
+        genderRedux: state.admin.genders
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {}
+    return {
+        getGenderStart: () => dispatch(actions.fetchGenderStart())
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRedux)
