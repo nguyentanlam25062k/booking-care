@@ -64,7 +64,6 @@ class Login extends Component {
     }
 
     render() {
-        console.log(this.state)
         return (
             <div className='login-background'>
                 <div className='login-container'>
