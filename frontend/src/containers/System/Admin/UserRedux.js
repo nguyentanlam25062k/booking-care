@@ -7,15 +7,18 @@ import * as actions from '../../../store/actions'
 import './UserRedux.scss'
 import Lightbox from 'react-image-lightbox'
 import 'react-image-lightbox/style.css'
+import TableManageUser from './TableManageUser'
 class UserRedux extends Component {
     constructor(props) {
         super(props)
+
         this.state = {
             genderArr: [],
             positionArr: [],
             roleArr: [],
             previewImgUrl: '',
             isOpen: false,
+
             email: '',
             password: '',
             firstName: '',
@@ -57,6 +60,21 @@ class UserRedux extends Component {
                 role: arrRole && arrRole.length > 0 ? arrRole[0].key : ''
             })
         }
+
+        if (prevProps.listUsers !== this.props.listUsers) {
+            this.setState({
+                email: '',
+                password: '',
+                firstName: '',
+                lastName: '',
+                phoneNumber: '',
+                address: '',
+                gender: '',
+                position: '',
+                role: '',
+                avatar: ''
+            })
+        }
     }
 
     handleOnChangeImage = (e) => {
@@ -92,7 +110,9 @@ class UserRedux extends Component {
     }
 
     onChangeInput = (e, id) => {
-        let copyState = { ...this.state }
+        let copyState = {
+            ...this.state
+        }
         copyState[id] = e.target.value
         this.setState({
             ...copyState
@@ -102,7 +122,7 @@ class UserRedux extends Component {
     handleSaveUser = () => {
         let isValid = this.checkValidateInput()
         if (!isValid) return
-        {/* prettier-ignore */}
+
         let {
             email,
             password,
@@ -138,7 +158,7 @@ class UserRedux extends Component {
 
         return (
             <div className='user-redux-container'>
-                <div className='title'>Learn Redux with hoi dan IT Chanel</div>
+                <div className='title'> Learn Redux with hoi dan IT Chanel </div>
                 <div className='user-redux-body'>
                     <div className='container'>
                         <div className='row'>
@@ -167,7 +187,6 @@ class UserRedux extends Component {
                                     onChange={(e) => this.onChangeInput(e, 'password')}
                                 />
                             </div>
-
                             <div className='col-3'>
                                 <label>
                                     <FormattedMessage id='manage-user.first-name' />
@@ -266,19 +285,24 @@ class UserRedux extends Component {
                                         onChange={(e) => this.handleOnChangeImage(e)}
                                     />
                                     <label className='label-upload' htmlFor='previewImg'>
-                                        Tải ảnh <i className='fas fa-upload'></i>
+                                        Tải ảnh <i className='fas fa-upload'> </i>
                                     </label>
                                     <div
                                         className='preview-image mt-2'
-                                        style={{ backgroundImage: `url(${this.state.previewImgUrl})` }}
+                                        style={{
+                                            backgroundImage: `url(${this.state.previewImgUrl})`
+                                        }}
                                         onClick={() => this.openPreviewImage()}
                                     ></div>
                                 </div>
                             </div>
-                            <div className='col-12 mt-3' onClick={() => this.handleSaveUser()}>
+                            <div className='col-12 my-3' onClick={() => this.handleSaveUser()}>
                                 <div className='btn btn-primary'>
                                     <FormattedMessage id='manage-user.save' />
                                 </div>
+                            </div>
+                            <div className='col-12 mb-5'>
+                                <TableManageUser />
                             </div>
                         </div>
                     </div>
@@ -286,7 +310,11 @@ class UserRedux extends Component {
                 {this.state.isOpen === true && (
                     <Lightbox
                         mainSrc={this.state.previewImgUrl}
-                        onCloseRequest={() => this.setState({ isOpen: false })}
+                        onCloseRequest={() =>
+                            this.setState({
+                                isOpen: false
+                            })
+                        }
                     />
                 )}
             </div>
@@ -300,7 +328,8 @@ const mapStateToProps = (state) => {
         genderRedux: state.admin.genders,
         positionRedux: state.admin.positions,
         roleRedux: state.admin.roles,
-        isLoadingGender: state.admin.isLoadingGender
+        isLoadingGender: state.admin.isLoadingGender,
+        listUsers: state.admin.users
     }
 }
 
@@ -309,7 +338,8 @@ const mapDispatchToProps = (dispatch) => {
         getGenderStart: () => dispatch(actions.fetchGenderStart()),
         getPositionStart: () => dispatch(actions.fetchPositionStart()),
         getRoleStart: () => dispatch(actions.fetchRoleStart()),
-        createNewUser: (data) => dispatch(actions.createNewUser(data))
+        createNewUser: (data) => dispatch(actions.createNewUser(data)),
+        fetchUserRedux: () => dispatch(actions.fetchAllUsersStart())
     }
 }
 
