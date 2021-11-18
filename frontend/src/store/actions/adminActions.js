@@ -4,7 +4,8 @@ import {
     createNewUserService,
     getAllUsers,
     deleteUserService,
-    editUserService
+    editUserService,
+    getTopDoctorService
 } from '../../services/userService'
 import { toast } from 'react-toastify'
 import { css } from 'glamor'
@@ -194,6 +195,36 @@ export const editUser = (data) => {
         } catch (e) {
             toast.error('Update user fail!')
             dispatch(editUserFailed())
+        }
+    }
+}
+
+export const base = () => {
+    return async (dispatch, getState) => {
+        try {
+        } catch (e) {}
+    }
+}
+
+export const fetchTopDoctor = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getTopDoctorService('')
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTOR_SUCCESS,
+                    dataDoctors: res.data
+                })
+            } else {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTOR_FAILED
+                })
+            }
+        } catch (e) {
+            console.log('FETCH_TOP_DOCTOR_FAILED', e)
+            dispatch({
+                type: actionTypes.FETCH_TOP_DOCTOR_FAILED
+            })
         }
     }
 }

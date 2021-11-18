@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { getAllCodeService } from '../../../services/userService'
-import { LANGUAGES, CRUD_ACTIONS } from '../../../utils'
+import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from '../../../utils'
 import * as actions from '../../../store/actions'
 import './UserRedux.scss'
 import Lightbox from 'react-image-lightbox'
 import 'react-image-lightbox/style.css'
 import TableManageUser from './TableManageUser'
+import _ from 'lodash'
 class UserRedux extends Component {
     constructor(props) {
         super(props)
@@ -42,25 +43,26 @@ class UserRedux extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.genderRedux !== this.props.genderRedux) {
+        // _.isEqual(prevProps.roleRedux , this.props.roleRedux)
+        if (!_.isEqual(prevProps.genderRedux, this.props.genderRedux)) {
             let arrGenders = this.props.genderRedux
             this.setState({
                 genderArr: arrGenders,
-                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].key : ''
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : ''
             })
         }
-        if (prevProps.positionRedux !== this.props.positionRedux) {
+        if (!_.isEqual(prevProps.positionRedux, this.props.positionRedux)) {
             let arrPosition = this.props.positionRedux
             this.setState({
                 positionArr: arrPosition,
-                position: arrPosition && arrPosition.length > 0 ? arrPosition[0].key : ''
+                position: arrPosition && arrPosition.length > 0 ? arrPosition[0].keyMap : ''
             })
         }
-        if (prevProps.roleRedux !== this.props.roleRedux) {
+        if (!_.isEqual(prevProps.roleRedux, this.props.roleRedux)) {
             let arrRole = this.props.roleRedux
             this.setState({
                 roleArr: arrRole,
-                role: arrRole && arrRole.length > 0 ? arrRole[0].key : ''
+                role: arrRole && arrRole.length > 0 ? arrRole[0].keyMap : ''
             })
         }
 
@@ -75,29 +77,31 @@ class UserRedux extends Component {
                 lastName: '',
                 phoneNumber: '',
                 address: '',
-                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].key : '',
-                position: arrPosition && arrPosition.length > 0 ? arrPosition[0].key : '',
-                role: arrRole && arrRole.length > 0 ? arrRole[0].key : '',
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
+                position: arrPosition && arrPosition.length > 0 ? arrPosition[0].keyMap : '',
+                role: arrRole && arrRole.length > 0 ? arrRole[0].keyMap : '',
                 avatar: '',
+                previewImgUrl: '',
                 action: CRUD_ACTIONS.CREATE
             })
         }
     }
 
-    handleOnChangeImage = (e) => {
+    handleOnChangeImage = async (e) => {
         let data = e.target.files
         let file = data[0]
         if (file) {
+            let base64 = await CommonUtils.getBase64(file)
             let objectUrl = URL.createObjectURL(file)
             this.setState({
                 previewImgUrl: objectUrl,
-                avatar: file
+                avatar: base64
             })
         }
     }
 
     openPreviewImage = () => {
-        if (!this.state.isOpen) return
+        if (!this.state.previewImgUrl) return
         this.setState({
             isOpen: true
         })
@@ -140,8 +144,8 @@ class UserRedux extends Component {
             gender,
             position: positionId,
             role: roleId,
-            action
-            // avatar
+            action,
+            avatar
         } = this.state
 
         if (action === CRUD_ACTIONS.CREATE) {
@@ -154,7 +158,8 @@ class UserRedux extends Component {
                 address,
                 gender,
                 positionId,
-                roleId
+                roleId,
+                avatar
             })
         }
 
@@ -169,13 +174,17 @@ class UserRedux extends Component {
                 address,
                 gender,
                 positionId,
-                roleId
-                // avatar
+                roleId,
+                avatar
             })
         }
     }
 
     handleEditUserFromParent = (user) => {
+        let imageBase64 = ''
+        if (user.image) {
+            imageBase64 = new Buffer(user.image, 'base64').toString('binary')
+        }
         this.setState({
             email: user.email,
             password: 'HARD CODE',
@@ -187,6 +196,7 @@ class UserRedux extends Component {
             position: user.positionId,
             role: user.roleId,
             avatar: '',
+            previewImgUrl: imageBase64,
             action: CRUD_ACTIONS.EDIT,
             userEditId: user.id
         })
@@ -197,7 +207,6 @@ class UserRedux extends Component {
         let positions = this.state.positionArr
         let roles = this.state.roleArr
         let language = this.props.language
-
         let { email, password, firstName, lastName, phoneNumber, address, position, gender, role, avatar } = this.state
 
         return (
@@ -289,7 +298,7 @@ class UserRedux extends Component {
                                     {genders &&
                                         genders.length > 0 &&
                                         genders.map((item, index) => (
-                                            <option key={index} value={item.key}>
+                                            <option key={index} value={item.keyMap}>
                                                 {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
                                             </option>
                                         ))}
@@ -307,7 +316,7 @@ class UserRedux extends Component {
                                     {positions &&
                                         positions.length > 0 &&
                                         positions.map((item, index) => (
-                                            <option key={index} value={item.key}>
+                                            <option key={index} value={item.keyMap}>
                                                 {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
                                             </option>
                                         ))}
@@ -325,7 +334,7 @@ class UserRedux extends Component {
                                     {roles &&
                                         roles.length > 0 &&
                                         roles.map((item, index) => (
-                                            <option key={index} value={item.key}>
+                                            <option key={index} value={item.keyMap}>
                                                 {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
                                             </option>
                                         ))}
@@ -369,10 +378,7 @@ class UserRedux extends Component {
                                 </button>
                             </div>
                             <div className='col-12 mb-5'>
-                                <TableManageUser
-                                    handleEditUserFromParent={this.handleEditUserFromParent}
-                                    action={this.state.action}
-                                />
+                                <TableManageUser handleEditUserFromParent={this.handleEditUserFromParent} />
                             </div>
                         </div>
                     </div>
