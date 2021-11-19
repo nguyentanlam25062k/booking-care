@@ -363,7 +363,7 @@ class UserRedux extends Component {
                                     ></div>
                                 </div>
                             </div>
-                            <div className='col-12 my-3'>
+                            <div className='col-12 mb-3'>
                                 <button
                                     className={
                                         this.state.action === CRUD_ACTIONS.EDIT ? 'btn btn-warning' : 'btn btn-primary'
