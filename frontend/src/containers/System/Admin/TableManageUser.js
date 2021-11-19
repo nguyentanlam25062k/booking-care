@@ -52,7 +52,7 @@ class TableManageUser extends Component {
         let arrUsers = this.state.usersRedux
         return (
             <>
-                <table id='TableManageUser'>
+                <table id='TableManageUser' className='mb-5'>
                     <tbody>
                         <tr>
                             <th>Email</th>
