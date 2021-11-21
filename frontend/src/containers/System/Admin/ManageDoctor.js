@@ -7,12 +7,7 @@ import MdEditor from 'react-markdown-editor-lite'
 import 'react-markdown-editor-lite/lib/index.css'
 import Select from 'react-select'
 import './ManageDoctor.scss'
-
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
+import { LANGUAGES } from '../../../utils/constant'
 
 const mdParser = new MarkdownIt(/* Markdown-it options */)
 
@@ -21,30 +16,67 @@ class TableManageUser extends Component {
         super(props)
         this.state = {
             contentMarkdown: '',
-            contentHtml: '',
+            contentHTML: '',
             selectedDoctor: '',
-            description: ''
+            description: '',
+            listDoctors: []
         }
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        this.props.fetchAllDoctors()
+    }
 
-    componentDidUpdate(prevProps, prevState) {}
+    buildDataInputSelect = (data) => {
+        let result = []
+        let { language } = this.props
+        if (data && data.length > 0) {
+            result = data.map((item, index) => {
+                let obj = {}
+                let labelVi = `${item.lastName} ${item.firstName}`
+                let labelEn = `${item.firstName} ${item.lastName}`
+                obj.label = language === LANGUAGES.VI ? labelVi : labelEn
+                obj.value = item.id
+                return obj
+            })
+        }
+        return result
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.allDoctors !== this.props.allDoctors) {
+            let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
+            this.setState({
+                listDoctors: dataSelect
+            })
+        }
+        if (prevProps.language !== this.props.language) {
+            let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
+            this.setState({
+                listDoctors: dataSelect
+            })
+        }
+    }
 
     handleEditorChange = ({ html, text }) => {
         this.setState({
             contentMarkdown: text,
-            contentHtml: html
+            contentHTML: html
         })
     }
 
     handleSaveContentMarkdown = () => {
-        console.log('check state', this.state)
+        this.props.saveDetailDoctor({
+            contentHTMl: this.state.contentHTML,
+            contentMarkdown: this.state.contentMarkdown,
+            description: this.state.description,
+            doctorId: this.state.selectedDoctor.value
+        })
     }
 
     handleChange = (selectedDoctor) => {
         this.setState({ selectedDoctor })
-        console.log(`Option selected:`, selectedDoctor)
+        // console.log(`Option selected:`, selectedDoctor)
     }
 
     handleOnChangeDesc = (e) => {
@@ -53,6 +85,8 @@ class TableManageUser extends Component {
         })
     }
     render() {
+        let { selectedDoctor, listDoctors } = this.state
+        console.log('>>> state list doctors:', listDoctors)
         return (
             <>
                 <div className='manage-doctor-container'>
@@ -60,7 +94,7 @@ class TableManageUser extends Component {
                     <div className='more-info'>
                         <div className='content-left form-group'>
                             <label>Chọn bác sĩ</label>
-                            <Select value={this.state.selectedDoctor} onChange={this.handleChange} options={options} />
+                            <Select value={selectedDoctor} onChange={this.handleChange} options={listDoctors} />
                         </div>
                         <div className='content-right'>
                             <label>Thông tin giới thiệu</label>
@@ -90,14 +124,16 @@ class TableManageUser extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        listUsers: state.admin.users
+        language: state.app.language,
+        allDoctors: state.admin.allDoctors
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
-        deleteUserRedux: (id) => dispatch(actions.deleteUser(id))
+        fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
+        saveDetailDoctor: (data) => dispatch(actions.saveDetailDoctor(data))
     }
 }
 
