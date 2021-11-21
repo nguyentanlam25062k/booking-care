@@ -219,7 +219,7 @@ let getAllCodeService = (typeInput) => {
 }
 
 let base = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
         } catch (e) {
             reject(e)
