@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Slider from 'react-slick'
 
-import './MedicalFacility.scss'
 class MedicalFacility extends Component {
     render() {
         return (

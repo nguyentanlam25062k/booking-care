@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import Slider from 'react-slick'
 
-import './Specialty.scss'
-
 class Specialty extends Component {
     render() {
         return (
