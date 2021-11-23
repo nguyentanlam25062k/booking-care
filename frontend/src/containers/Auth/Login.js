@@ -31,7 +31,7 @@ class Login extends Component {
     }
 
     handleLogin = async (e) => {
-        e.preventDefault()
+        // e.preventDefault()
         this.setState({
             errMessage: ''
         })
@@ -63,6 +63,12 @@ class Login extends Component {
         })
     }
 
+    handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            this.handleLogin()
+        }
+    }
+
     render() {
         return (
             <div className='login-background'>
@@ -88,6 +94,7 @@ class Login extends Component {
                                     placeholder='Enter your password'
                                     value={this.state.password}
                                     onChange={(e) => this.handleOnChangePassword(e)}
+                                    onKeyDown={(e) => this.handleKeyDown(e)}
                                 />
                                 <span onClick={() => this.handleShowHidePassword()}>
                                     <i className={this.state.isShowPassword ? 'fas fa-eye' : 'fas fa-eye-slash'}></i>

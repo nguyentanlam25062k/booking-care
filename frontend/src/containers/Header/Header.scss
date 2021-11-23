@@ -25,10 +25,22 @@
     }
   }
 
+  .header-avatar {
+    display      : inline-block;
+    width        : 30px;
+    height       : 30px;
+    margin-right : 10px;
+    border-radius: 50%;
+  }
+
   .languages {
+    display    : flex;
+    align-items: center;
+
     .welcome {
       margin-right: 10px;
     }
+
 
     .language-en {
       margin-right: 15px;

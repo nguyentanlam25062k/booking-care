@@ -69,7 +69,7 @@ class TableManageUser extends Component {
 
     handleSaveContentMarkdown = () => {
         // let { hasOldData } = this.state
-        let { contentMarkdown, contentHTML, selectedDoctor, description, listDoctors, hasOldData } = this.state
+        let { hasOldData } = this.state
         this.props.saveDetailDoctor({
             contentHTML: this.state.contentHTML,
             contentMarkdown: this.state.contentMarkdown,
@@ -98,7 +98,6 @@ class TableManageUser extends Component {
                 hasOldData: false
             })
         }
-        console.log('handle change select res', res)
     }
 
     handleOnChangeDesc = (e) => {
@@ -156,7 +155,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
         fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
         saveDetailDoctor: (data) => dispatch(actions.saveDetailDoctor(data))
     }

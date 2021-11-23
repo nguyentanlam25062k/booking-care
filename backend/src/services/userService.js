@@ -10,11 +10,14 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUserEmail(email)
             if (isExist) {
                 let user = await db.User.findOne({
-                    attributes: ['email', 'roleId', 'password', 'firstName', 'lastName'],
+                    attributes: ['email', 'roleId', 'password', 'firstName', 'lastName', 'image'],
                     where: { email: email },
                     raw: true
                 })
                 if (user) {
+                    if (user?.image) {
+                        user.image = new Buffer(user.image, 'base64').toString('binary')
+                    }
                     let check = await bcrypt.compareSync(password, user.password)
                     if (check) {
                         userData.errCode = 0
