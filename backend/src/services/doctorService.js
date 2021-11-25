@@ -130,7 +130,7 @@ let getDetailDoctorById = (inputId) => {
 let bulkCreateSchedule = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.arrSchedule || !data.doctorId || !data.date) {
+            if (!data.arrSchedule || !data.doctorId || !data.formattedDate) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing required param !'
@@ -145,7 +145,7 @@ let bulkCreateSchedule = (data) => {
                 let existing = await db.Schedule.findAll({
                     where: {
                         doctorId: data.doctorId,
-                        date: data.date
+                        date: data.formattedDate
                     },
                     attributes: ['timeType', 'date', 'doctorId', 'maxNumber'],
                     raw: true
@@ -177,11 +177,39 @@ let bulkCreateSchedule = (data) => {
     })
 }
 
+let getScheduleByDate = (doctorId, date) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId || !date) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+                let dataSchedule = await db.Schedule.findAll({
+                    where: {
+                        doctorId: doctorId,
+                        date: date
+                    }
+                })
+                if (!dataSchedule) dataSchedule = []
+                resolve({
+                    errCode: 0,
+                    data: dataSchedule
+                })
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
     getTopDoctorHome,
     getAllDoctors,
     saveDetailInfoDoctor,
     saveDetailInfoDoctor,
     getDetailDoctorById,
-    bulkCreateSchedule
+    bulkCreateSchedule,
+    getScheduleByDate
 }
