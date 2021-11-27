@@ -52,33 +52,92 @@ let getAllDoctors = () => {
 let saveDetailInfoDoctor = (inputData) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!inputData.doctorId || !inputData.contentHTML || !inputData.contentMarkdown || !inputData.action) {
+            let {
+                doctorId,
+                contentHTML,
+                contentMarkdown,
+                description,
+                action,
+                selectedPrice,
+                selectedPayment,
+                selectedProvince,
+                nameClinic,
+                addressClinic,
+                note
+            } = inputData
+
+            if (
+                !doctorId ||
+                !contentHTML ||
+                !contentMarkdown ||
+                !description ||
+                !action ||
+                !selectedPrice ||
+                !selectedPayment ||
+                !selectedProvince ||
+                !nameClinic ||
+                !addressClinic ||
+                !note
+            ) {
                 console.log(inputData)
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing parameter'
                 })
             } else {
-                if (inputData.action === 'CREATE') {
+                // upsert  to Markdown
+                if (action === 'CREATE') {
                     await db.Markdown.create({
-                        contentHTML: inputData.contentHTML,
-                        contentMarkdown: inputData.contentMarkdown,
-                        description: inputData.description,
-                        doctorId: inputData.doctorId
+                        contentHTML: contentHTML,
+                        contentMarkdown: contentMarkdown,
+                        description: description,
+                        doctorId: doctorId
                     })
-                } else if (inputData.action === 'EDIT') {
+                } else if (action === 'EDIT') {
                     let doctorMarkdown = await db.Markdown.findOne({
-                        where: { doctorId: inputData.doctorId },
+                        where: { doctorId: doctorId },
                         raw: false
                     })
 
                     if (doctorMarkdown) {
-                        doctorMarkdown.contentHTML = inputData.contentHTML
-                        doctorMarkdown.contentMarkdown = inputData.contentMarkdown
-                        doctorMarkdown.description = inputData.description
+                        doctorMarkdown.contentHTML = contentHTML
+                        doctorMarkdown.contentMarkdown = contentMarkdown
+                        doctorMarkdown.description = description
                         doctorMarkdown.updateAt = new Date()
                         await doctorMarkdown.save()
                     }
+                }
+
+                // upsert to Doctor_info table
+                let doctorInfo = await db.Doctor_Info.findOne({
+                    where: {
+                        doctorId: doctorId
+                    },
+                    raw: false
+                })
+
+                if (doctorInfo) {
+                    // update
+                    doctorInfo.doctorId = doctorId
+                    doctorInfo.priceId = selectedPrice
+                    doctorInfo.provinceId = selectedProvince
+                    doctorInfo.paymentId = selectedPayment
+                    doctorInfo.addressClinic = addressClinic
+                    doctorInfo.nameClinic = nameClinic
+                    doctorInfo.note = note
+
+                    await doctorInfo.save()
+                } else {
+                    // create
+                    await db.Doctor_Info.create({
+                        doctorId: doctorId,
+                        priceId: selectedPrice,
+                        provinceId: selectedProvince,
+                        paymentId: selectedPayment,
+                        addressClinic: addressClinic,
+                        nameClinic: nameClinic,
+                        note: note
+                    })
                 }
                 resolve({
                     errCode: 0,

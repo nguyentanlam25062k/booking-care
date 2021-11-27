@@ -20,6 +20,10 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false
             },
+            priceId: {
+                type: Sequelize.STRING,
+                allowNull: false
+            },
             addressClinic: {
                 type: Sequelize.STRING,
                 allowNull: false
