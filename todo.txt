@@ -1,1 +1,51 @@
 
+
+let users = [
+    { 
+        email: 'user01@gmail.com', 
+        password: '123456', 
+        firstName: 'lam', 
+        lastName: 'nguyen' 
+    },
+    { 
+        email: 'user02@gmail.com', 
+        password: '123456', 
+        firstName: 'teo', 
+        lastName: 'ho' 
+    },
+    { 
+        email: 'user03@gmail.com', 
+        password: '123456', 
+        firstName: 'vu', 
+        lastName: 'phan'
+     }
+]
+
+
+
+let users2 = [
+    {
+        email: 'user01@gmail.com',
+        password: '123456',
+        firstName: 'lam',
+        lastName: 'nguyen',
+        nameVi: 'nguyen lam',
+        nameEn: 'lam nguyen'
+    },
+    {
+        email: 'user02@gmail.com',
+        password: '123456',
+        firstName: 'teo',
+        lastName: 'ho',
+        nameVi: 'ho teo',
+        nameEn: 'teo ho'
+    },
+    {
+        email: 'user03@gmail.com',
+        password: '123456',
+        firstName: 'vu',
+        lastName: 'phan',
+        nameVi: 'phan vu',
+        nameEn: 'vu phan'
+    }
+]
