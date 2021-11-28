@@ -4,6 +4,8 @@ import { FormattedMessage } from 'react-intl'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
 import './BookingModal.scss'
+import ProfileDoctor from '../ProfileDoctor'
+import _ from 'lodash'
 
 class BookingModal extends Component {
     constructor(props) {
@@ -21,6 +23,8 @@ class BookingModal extends Component {
     render() {
         // toggle={}
         let { isOpenModal, closeBookingModal, dataTime } = this.props
+        let doctorId = dataTime && !_.isEmpty(dataTime) ? dataTime.doctorId : ''
+
         return (
             <Modal isOpen={isOpenModal} className={'booking-modal-container'} size='lg' centered>
                 <div className='booking-modal-content'>
@@ -32,35 +36,37 @@ class BookingModal extends Component {
                     </div>
                     <div className='booking-modal-body'>
                         {/* {JSON.stringify(dataTime)} */}
-                        <div className='doctor-info'></div>
-                        <div className='price'>Giá khám 500.000VND</div>
+
+                        <div className='doctor-info'>
+                            <ProfileDoctor doctorId={doctorId} />
+                        </div>
                         <div className='row'>
                             <div className='col-6 form-group'>
-                                <labe>Họ tên</labe>
+                                <label>Họ tên</label>
                                 <input type='text' className='form-control' />
                             </div>
                             <div className='col-6 form-group'>
-                                <labe>Số điện thoại</labe>
+                                <label>Số điện thoại</label>
                                 <input type='text' className='form-control' />
                             </div>
                             <div className='col-6 form-group'>
-                                <labe>Địa chỉ Email</labe>
+                                <label>Địa chỉ Email</label>
                                 <input type='text' className='form-control' />
                             </div>
                             <div className='col-6 form-group'>
-                                <labe>Địa chỉ liên hệ</labe>
+                                <label>Địa chỉ liên hệ</label>
                                 <input type='text' className='form-control' />
                             </div>
                             <div className='col-12 form-group'>
-                                <labe>Lý do khám</labe>
+                                <label>Lý do khám</label>
                                 <input type='text' className='form-control' />
                             </div>
                             <div className='col-6 form-group'>
-                                <labe>Đặt cho ai</labe>
+                                <label>Đặt cho ai</label>
                                 <input type='text' className='form-control' />
                             </div>
                             <div className='col-6 form-group'>
-                                <labe>Giới tính</labe>
+                                <label>Giới tính</label>
                                 <input type='text' className='form-control' />
                             </div>
                         </div>
