@@ -20,6 +20,8 @@ import CustomScrollbars from '../components/CustomScrollbars'
 import DetailDoctor from './Patient/Doctor/DetailDoctor'
 import Doctor from '../routes/Doctor'
 
+import './App.scss'
+
 class App extends Component {
     handlePersistorState = () => {
         const { persistor } = this.props
