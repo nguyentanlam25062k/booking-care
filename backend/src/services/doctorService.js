@@ -346,6 +346,7 @@ let getProfileDoctorById = (doctorId) => {
                         },
                         {
                             model: db.Doctor_Info,
+
                             attributes: {
                                 exclude: ['password']
                             },
