@@ -5,7 +5,8 @@ require('dotenv').config()
 let postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.timeType || !data.date || !data.date) {
+            let { email, timeType, doctorId, date } = data
+            if (!email || !timeType || !doctorId || !date) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing required parameter'
@@ -13,9 +14,9 @@ let postBookAppointment = (data) => {
             } else {
                 // upsert patient
                 let [user, createdUser] = await db.User.findOrCreate({
-                    where: { email: data.email },
+                    where: { email: email },
                     defaults: {
-                        email: data.email,
+                        email: email,
                         roleId: 'R3'
                     }
                 })
@@ -27,11 +28,11 @@ let postBookAppointment = (data) => {
                             patientId: user.id
                         },
                         defaults: {
-                            patientId: user.id,
                             statusId: 'S1',
-                            doctorId: data.doctorId,
-                            data: data.date,
-                            timeType: data.timeType
+                            doctorId: doctorId,
+                            patientId: user.id,
+                            date: date,
+                            timeType: timeType
                         }
                     })
                     resolve({
