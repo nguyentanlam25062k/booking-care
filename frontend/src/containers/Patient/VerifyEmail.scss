@@ -1,0 +1,50 @@
+.verify-email-container {
+  margin-top: 100px;
+
+  .info-booking-success {
+    text-align: center;
+
+    .info-booking-header {
+      height          : 80px;
+      line-height     : 80px;
+      text-transform  : uppercase;
+      color           : #fff;
+      background-color: #3ba6f8;
+      font-size       : 30px;
+    }
+
+    .info-booking-container {
+      .cart {
+        font-size: 80px;
+        color    : orange;
+      }
+
+      .content {
+        font-size     : 50px;
+        color         : #333;
+        text-transform: uppercase;
+        font-weight   : bold;
+        box-shadow    : unset
+      }
+
+      .thanks {}
+
+      .call {}
+
+      .hotline {
+        .phone {
+          font-size   : 20px;
+          color       : #333;
+          margin-right: 5px;
+
+        }
+
+        .phone-number {
+          margin   : 0 5px;
+          font-size: 25px;
+          color    : red;
+        }
+      }
+    }
+  }
+}
