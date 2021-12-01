@@ -2,6 +2,13 @@ import _ from 'lodash'
 import db from '../models/index'
 require('dotenv').config()
 import emailService from './emailService'
+import { v4 as uuidv4 } from 'uuid'
+
+let buildUrlEmail = (doctorId, token) => {
+    let result = ''
+    result = `${process.env.URL_REACT}/verify-booking?token=${token}&doctorId=${doctorId}`
+    return result
+}
 
 let postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -13,14 +20,15 @@ let postBookAppointment = (data) => {
                     errMessage: 'Missing required parameter'
                 })
             } else {
+                let token = uuidv4() // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+
                 await emailService.sendSimpleEmail({
                     receiveEmail: email,
                     patientName: fullName,
                     time: timeString,
                     doctorName: doctorName,
                     language: data.language,
-                    redirectLink:
-                        'https://www.youtube.com/watch?v=0GL--Adfqhc&list=PLncHg6Kn2JT6E38Z3kit9Hnif1xC_9VqI&index=94'
+                    redirectLink: buildUrlEmail(doctorId, token)
                 })
 
                 // upsert patient
@@ -43,7 +51,8 @@ let postBookAppointment = (data) => {
                             doctorId: doctorId,
                             patientId: user.id,
                             date: date,
-                            timeType: timeType
+                            timeType: timeType,
+                            token: token
                         }
                     })
                     resolve({
@@ -59,6 +68,45 @@ let postBookAppointment = (data) => {
     })
 }
 
+let postVerifyBookAppointment = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { token, doctorId } = data
+            if (!token || !doctorId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter'
+                })
+            } else {
+                let appointment = await db.Booking.findOne({
+                    where: {
+                        doctorId,
+                        token,
+                        statusId: 'S1'
+                    },
+                    raw: false
+                })
+                if (appointment) {
+                    appointment.statusId = 'S2'
+                    await appointment.save()
+                    resolve({
+                        errCode: 0,
+                        errMessage: 'Update appointment success!'
+                    })
+                } else {
+                    resolve({
+                        errCode: 2,
+                        errMessage: 'Appointment has been activated or does not exist!'
+                    })
+                }
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
-    postBookAppointment
+    postBookAppointment,
+    postVerifyBookAppointment
 }
