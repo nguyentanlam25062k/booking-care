@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import db from '../models/index'
 require('dotenv').config()
+import emailService from './emailService'
 
 let postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -12,6 +13,15 @@ let postBookAppointment = (data) => {
                     errMessage: 'Missing required parameter'
                 })
             } else {
+                await emailService.sendSimpleEmail({
+                    receiveEmail: email,
+                    patientName: 'Hoi dan IT',
+                    time: '8:00 - 9:00',
+                    doctorName: 'Eric',
+                    redirectLink:
+                        'https://www.youtube.com/watch?v=0GL--Adfqhc&list=PLncHg6Kn2JT6E38Z3kit9Hnif1xC_9VqI&index=94'
+                })
+
                 // upsert patient
                 let [user, createdUser] = await db.User.findOrCreate({
                     where: { email: email },
