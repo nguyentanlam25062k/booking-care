@@ -49,6 +49,37 @@ let getAllDoctors = () => {
     })
 }
 
+let checkRequiredFields = (inputData) => {
+    let isValid = true
+    let element = ''
+    let arrFields = [
+        'doctorId',
+        'contentHTML',
+        'contentMarkdown',
+        'description',
+        'action',
+        'selectedPrice',
+        'selectedPayment',
+        'selectedProvince',
+        'nameClinic',
+        'addressClinic',
+        'note',
+        'specialtyId'
+    ]
+
+    for (let i = 0; i < arrFields.length; i++) {
+        if (!inputData[arrFields[i]]) {
+            isValid = false
+            element = arrFields[i]
+            break
+        }
+    }
+    return {
+        isValid,
+        element
+    }
+}
+
 let saveDetailInfoDoctor = (inputData) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -63,26 +94,16 @@ let saveDetailInfoDoctor = (inputData) => {
                 selectedProvince,
                 nameClinic,
                 addressClinic,
-                note
+                note,
+                specialtyId,
+                clinicId
             } = inputData
 
-            if (
-                !doctorId ||
-                !contentHTML ||
-                !contentMarkdown ||
-                !description ||
-                !action ||
-                !selectedPrice ||
-                !selectedPayment ||
-                !selectedProvince ||
-                !nameClinic ||
-                !addressClinic ||
-                !note
-            ) {
-                console.log(inputData)
+            let checkObj = checkRequiredFields(inputData)
+            if (!checkObj.isValid) {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Missing parameter'
+                    errMessage: `Missing ${checkObj.element} parameter`
                 })
             } else {
                 // upsert  to Markdown
@@ -125,7 +146,8 @@ let saveDetailInfoDoctor = (inputData) => {
                     doctorInfo.addressClinic = addressClinic
                     doctorInfo.nameClinic = nameClinic
                     doctorInfo.note = note
-
+                    doctorInfo.specialtyId = specialtyId
+                    doctorInfo.clinicId = clinicId
                     await doctorInfo.save()
                 } else {
                     // create
@@ -136,7 +158,9 @@ let saveDetailInfoDoctor = (inputData) => {
                         paymentId: selectedPayment,
                         addressClinic: addressClinic,
                         nameClinic: nameClinic,
-                        note: note
+                        note: note,
+                        specialtyId: specialtyId,
+                        clinicId: clinicId
                     })
                 }
                 resolve({

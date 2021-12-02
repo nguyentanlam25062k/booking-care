@@ -3,7 +3,6 @@ import db from '../models/index'
 let createSpecialty = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(data)
             let { name, imageBase64, descriptionHTML, descriptionMarkdown } = data
 
             if (!name || !imageBase64 || !descriptionHTML || !descriptionMarkdown) {
@@ -39,7 +38,6 @@ let getAllSpecialty = () => {
                 data = data.map((item) => ({ ...item, image: new Buffer(item.image, 'base64').toString('binary') }))
             }
 
-            console.log('>>> check data', data)
             resolve({
                 errCode: 0,
                 errMessage: 'Get success all specialty',

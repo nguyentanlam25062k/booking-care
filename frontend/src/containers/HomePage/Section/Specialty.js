@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import Slider from 'react-slick'
 import { getAllSpecialty } from '../../../services/userService'
 import './Specialty.scss'
+import { withRouter } from 'react-router'
 
 class Specialty extends Component {
     constructor(props) {
@@ -15,7 +16,6 @@ class Specialty extends Component {
 
     async componentDidMount() {
         let res = await getAllSpecialty()
-        console.log('manage specialty check res', res)
         if (res && res.errCode === 0) {
             this.setState({
                 dataSpecialty: res.data
@@ -25,6 +25,12 @@ class Specialty extends Component {
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.language !== this.props.language) {
+        }
+    }
+
+    handleViewDetailSpecialty = (specialty) => {
+        if (this.props.history) {
+            this.props.history.push(`/detail-specialty/${specialty.id}`)
         }
     }
 
@@ -46,7 +52,11 @@ class Specialty extends Component {
                             {dataSpecialty &&
                                 dataSpecialty.length > 0 &&
                                 dataSpecialty.map((item, index) => (
-                                    <div className='section-customize specialty-child' key={index}>
+                                    <div
+                                        className='section-customize specialty-child'
+                                        key={index}
+                                        onClick={() => this.handleViewDetailSpecialty(item)}
+                                    >
                                         <div
                                             className='bg-image section-specialty'
                                             style={{
@@ -75,4 +85,4 @@ const mapDispatchToProps = (dispatch) => {
     return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Specialty)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Specialty))
