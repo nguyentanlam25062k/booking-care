@@ -221,9 +221,17 @@ let getAllCodeService = (typeInput) => {
     })
 }
 
-let base = () => {
+let base = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+            let { doctorId } = data
+            if (!doctorId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+            }
         } catch (e) {
             reject(e)
         }
