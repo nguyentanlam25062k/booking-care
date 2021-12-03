@@ -159,7 +159,9 @@ class TableManageUser extends Component {
             selectedSpecialty,
             selectedClinic
         } = this.state
+
         console.log('check state manage doctor', this.state)
+
         this.props.saveDetailDoctor({
             contentHTML: contentHTML,
             contentMarkdown: contentMarkdown,
@@ -201,17 +203,14 @@ class TableManageUser extends Component {
                 nameClinic = doctorInfo.nameClinic
                 note = doctorInfo.note
 
-                let priceId = doctorInfo.priceId
-                let paymentId = doctorInfo.paymentId
-                let provinceId = doctorInfo.provinceId
-                let specialtyId = doctorInfo.specialtyId
+                let { priceId, paymentId, provinceId, specialtyId } = doctorInfo
 
                 selectedPrice = listPrice.find((item) => item.value === priceId)
                 selectedPayment = listPayment.find((item) => item.value === paymentId)
                 selectedProvince = listProvince.find((item) => item.value === provinceId)
                 selectedSpecialty = listSpecialty.find((item) => item.value === specialtyId)
 
-                console.log('find item', selectedPrice, listPrice, priceId)
+                console.log('find item manage doctor', selectedSpecialty, specialtyId)
             }
             this.setState({
                 contentHTML: markdown.contentHTML,
@@ -224,7 +223,7 @@ class TableManageUser extends Component {
                 selectedPrice: selectedPrice,
                 selectedPayment: selectedPayment,
                 selectedProvince: selectedProvince,
-                specialtyId: selectedSpecialty
+                selectedSpecialty: selectedSpecialty
             })
         } else {
             this.setState({
@@ -238,8 +237,7 @@ class TableManageUser extends Component {
                 selectedPrice: '',
                 selectedPayment: '',
                 selectedProvince: '',
-                selectedSpecialty: '',
-                specialtyId: ''
+                selectedSpecialty: ''
             })
         }
     }
