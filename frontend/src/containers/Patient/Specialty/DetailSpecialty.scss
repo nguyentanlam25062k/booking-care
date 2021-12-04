@@ -1,20 +1,92 @@
 .detail-specialty-container {
-  .description-specialty {
-    border: 1px solid red;
+  .detail-specialty-wrap {
+    // height  : 400px;
+    position: relative;
 
+    .background-specialty {
+      // background-size  : cover;
+      // background-repeat: no-repeat;
+      position: absolute;
+      top     : 0;
+      left    : 0;
+      height  : 100%;
+      width   : 100%;
+      opacity : 0.3;
+    }
+
+    .description-specialty {
+      padding            : 10px 100px;
+      position           : relative;
+      z-index            : 2;
+      white-space        : nowrap;
+      overflow           : hidden !important;
+      text-overflow      : ellipsis;
+      // background-color: #fff;
+
+      h1,
+      h2 {
+        font-size  : 20px;
+        margin     : 20px 0;
+        font-weight: 600;
+      }
+
+      h3,
+      h4 {
+        color      : #333;
+        font-size  : 16px;
+        font-weight: 600;
+
+      }
+
+      ul,
+      li,
+      p {
+        color: #333;
+      }
+    }
+
+    .more-description {
+      margin-top: 10px;
+      padding   : 0 100px;
+      position  : relative;
+      z-index   : 2;
+
+      span {
+        padding     : 5px 10px;
+        color       : #337ab7;
+        font-size   : 16px;
+        padding-left: 0;
+      }
+    }
+  }
+
+
+  .search-sp-doctor {
+    margin: 20px 0;
+
+    select {
+      height       : 30px;
+      padding      : 5px 8px;
+      border       : none;
+      outline      : none;
+      border-radius: 3px;
+    }
   }
 
   .detail-specialty-body {
-    margin: 0 100px;
+    padding         : 0 100px;
+    background-color: #eee;
+    display         : flex;
+    flex-direction  : column;
+
   }
 
   .each-doctor {
-    display   : flex;
-    width     : 100%;
-    min-height: 300px;
-    margin    : 15px 0;
-    padding   : 15px;
-
+    display         : flex;
+    width           : 100%;
+    min-height      : 300px;
+    padding         : 15px;
+    margin-bottom   : 15px;
     background-color: #fff;
     box-shadow      : 0 1px 6px #20212447;
     border-radius   : 8px;
@@ -22,6 +94,17 @@
     .dt-content-left {
       width       : 50%;
       border-right: 1px solid #ddd;
+
+      .profile-doctor-container {
+        .down {
+          padding: 5px;
+        }
+
+        .view-detail-doctor a {
+          text-decoration: none;
+        }
+      }
+
     }
 
     .dt-content-right {
@@ -41,9 +124,6 @@
       }
 
 
-
-
     }
   }
-
 }
