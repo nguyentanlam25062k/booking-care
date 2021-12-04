@@ -14,12 +14,45 @@ module.exports = {
             address: {
                 type: Sequelize.STRING
             },
-            description: {
+
+            image: {
+                type: Sequelize.BLOB('long')
+            },
+            descriptionHTMLIntro: {
                 type: Sequelize.TEXT
             },
-            image: {
-                type: Sequelize.STRING
+            descriptionMarkdownIntro: {
+                type: Sequelize.TEXT
             },
+
+            descriptionHTMLStrength: {
+                type: Sequelize.TEXT
+            },
+            descriptionMarkdownStrength: {
+                type: Sequelize.TEXT
+            },
+
+            descriptionHTMLEquipment: {
+                type: Sequelize.TEXT
+            },
+            descriptionMarkdownEquipment: {
+                type: Sequelize.TEXT
+            },
+
+            descriptionHTMLLocation: {
+                type: Sequelize.TEXT
+            },
+            descriptionMarkdownLocation: {
+                type: Sequelize.TEXT
+            },
+
+            descriptionHTMLProcess: {
+                type: Sequelize.TEXT
+            },
+            descriptionMarkdownProcess: {
+                type: Sequelize.TEXT
+            },
+
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

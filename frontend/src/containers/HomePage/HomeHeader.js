@@ -9,6 +9,10 @@ import { changeLanguageApp } from '../../store/actions'
 import { withRouter } from 'react-router'
 
 class HomeHeader extends Component {
+    constructor(props) {
+        super(props)
+    }
+
     changeLanguage = (language) => {
         this.props.changeLanguageAppRedux(language)
     }
@@ -20,10 +24,10 @@ class HomeHeader extends Component {
     }
 
     render() {
-        let { language } = this.props
+        let { language, isThemeBlue } = this.props
         return (
             <>
-                <div className='home-header-container'>
+                <div className={isThemeBlue ? 'home-header-container theme-blue' : 'home-header-container'}>
                     <div className='home-header-content'>
                         <div className='left-content'>
                             <i className='fas fa-bars'></i>

@@ -7,6 +7,21 @@
     background-color: #fff;
     z-index         : 100;
 
+    &.theme-blue {
+        background-color: #45c3d2;
+        color           : #fff !important;
+
+        .left-content i {
+            color: #fff !important;
+        }
+
+        .header-logo {
+            filter: brightness(0) invert(1);
+        }
+
+
+    }
+
     .home-header-content {
         width  : 100%;
         height : 100%;
@@ -70,7 +85,7 @@
 
             .language-vi {
                 cursor : pointer;
-                opacity: 0.2;
+                opacity: 0.5;
 
                 &.active {
                     opacity: 1;
@@ -86,11 +101,11 @@
             .language-en {
                 margin : 0 10px;
                 cursor : pointer;
-                opacity: 0.2;
+                opacity: 0.5;
 
                 &.active {
                     opacity: 1;
-                    color  : blue
+                    color  : orange
                 }
 
                 &:hover {

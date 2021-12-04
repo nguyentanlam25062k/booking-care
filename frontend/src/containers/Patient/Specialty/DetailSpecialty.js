@@ -93,7 +93,7 @@ class DetailSpecialty extends Component {
         // console.log(object)
         return (
             <div className='detail-specialty-container'>
-                <HomeHeader isShowBanner={false} />
+                <HomeHeader isShowBanner={false} isThemeBlue={true} />
                 <div className='detail-specialty-wrap'>
                     <div
                         className='background-specialty'
