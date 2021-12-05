@@ -10,16 +10,54 @@ let buildUrlEmail = (doctorId, token) => {
     return result
 }
 
+let checkParameter = (param) => {
+    let element = ''
+    let isValid = true
+    let arrField = [
+        'email',
+        'timeType',
+        'doctorId',
+        'date',
+        'fullName',
+        'timeString',
+        'selectedGender',
+        'address',
+        'doctorName'
+    ]
+
+    for (let i = 0; i < arrField.length; i++) {
+        if (!param[arrField[i]]) element = arrField[i]
+        break
+    }
+    return {
+        element,
+        isValid
+    }
+}
+
 let postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let { email, timeType, doctorId, date, fullName, timeString, language, doctorName } = data
-            if (!email || !timeType || !doctorId || !date || !fullName) {
+            let checkParam = checkParameter(data)
+            if (!checkParam.isValid) {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Missing required parameter'
+                    errMessage: `Missing required ${checkParam.element} parameter`
                 })
             } else {
+                let {
+                    email,
+                    timeType,
+                    doctorId,
+                    date,
+                    fullName,
+                    timeString,
+                    selectedGender,
+                    address,
+                    doctorName,
+                    language
+                } = data
+
                 let token = uuidv4() // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
                 await emailService.sendSimpleEmail({
@@ -36,7 +74,10 @@ let postBookAppointment = (data) => {
                     where: { email: email },
                     defaults: {
                         email: email,
-                        roleId: 'R3'
+                        roleId: 'R3',
+                        gender: selectedGender,
+                        address: address,
+                        firstName: fullName
                     }
                 })
 
