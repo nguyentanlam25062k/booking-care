@@ -30,12 +30,14 @@ class TableManageUser extends Component {
             listProvince: [],
             listClinic: [],
             listSpecialty: [],
+            listClinic: [],
 
             selectedPrice: '',
             selectedPayment: '',
             selectedProvince: '',
             selectedClinic: '',
             selectedSpecialty: '',
+            selectedClinic: '',
 
             nameClinic: '',
             addressClinic: '',
@@ -105,17 +107,19 @@ class TableManageUser extends Component {
             })
         }
         if (prevProps.allRequiredDoctorInfo !== this.props.allRequiredDoctorInfo) {
-            let { resPrice, resPayment, resProvince, resSpecialty } = this.props.allRequiredDoctorInfo
+            let { resPrice, resPayment, resProvince, resSpecialty, resClinic } = this.props.allRequiredDoctorInfo
             let dataSelectPrice = this.buildDataInputSelect(resPrice, 'PRICE')
             let dataSelectPayment = this.buildDataInputSelect(resPayment, 'PAYMENT')
             let dataSelectProvince = this.buildDataInputSelect(resProvince, 'PROVINCE')
             let dataSelectSpecialty = this.buildDataInputSelect(resSpecialty, 'SPECIALTY')
+            let dataSelectClinic = this.buildDataInputSelect(resClinic, 'CLINIC')
 
             this.setState({
                 listPrice: dataSelectPrice,
                 listPayment: dataSelectPayment,
                 listProvince: dataSelectProvince,
-                listSpecialty: dataSelectSpecialty
+                listSpecialty: dataSelectSpecialty,
+                listClinic: dataSelectClinic
             })
         }
         if (prevProps.language !== this.props.language) {
@@ -193,22 +197,24 @@ class TableManageUser extends Component {
                 selectedPrice = '',
                 selectedPayment = '',
                 selectedProvince = '',
-                selectedSpecialty = ''
+                selectedSpecialty = '',
+                selectedClinic = ''
 
             if (res?.data?.Doctor_Info) {
-                let { listProvince, listPayment, listPrice, listSpecialty } = this.state
+                let { listProvince, listPayment, listPrice, listSpecialty, listClinic } = this.state
                 let doctorInfo = res.data.Doctor_Info
 
                 addressClinic = doctorInfo.addressClinic
                 nameClinic = doctorInfo.nameClinic
                 note = doctorInfo.note
 
-                let { priceId, paymentId, provinceId, specialtyId } = doctorInfo
+                let { priceId, paymentId, provinceId, specialtyId, clinicId } = doctorInfo
 
                 selectedPrice = listPrice.find((item) => item.value === priceId)
                 selectedPayment = listPayment.find((item) => item.value === paymentId)
                 selectedProvince = listProvince.find((item) => item.value === provinceId)
                 selectedSpecialty = listSpecialty.find((item) => item.value === specialtyId)
+                selectedClinic = listClinic.find((item) => item.value === clinicId)
 
                 console.log('find item manage doctor', selectedSpecialty, specialtyId)
             }
@@ -223,7 +229,8 @@ class TableManageUser extends Component {
                 selectedPrice: selectedPrice,
                 selectedPayment: selectedPayment,
                 selectedProvince: selectedProvince,
-                selectedSpecialty: selectedSpecialty
+                selectedSpecialty: selectedSpecialty,
+                selectedClinic: selectedClinic
             })
         } else {
             this.setState({
@@ -237,7 +244,8 @@ class TableManageUser extends Component {
                 selectedPrice: '',
                 selectedPayment: '',
                 selectedProvince: '',
-                selectedSpecialty: ''
+                selectedSpecialty: '',
+                selectedClinic: ''
             })
         }
     }

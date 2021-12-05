@@ -1,0 +1,116 @@
+.detail-clinic-container {
+  .detail-clinic-header {
+    padding: 0 100px;
+
+    .background-clinic {
+      height: 200px;
+    }
+
+    .description-clinic {
+      display        : flex;
+      justify-content: space-between;
+      align-items    : center;
+      padding        : 10px 50px;
+
+      .description-left {
+        display: flex;
+
+        .clinic-logo {
+          width       : 120px;
+          height      : 60px;
+          margin-right: 15px;
+        }
+
+        .clinic-info {
+          .name {
+            font-size: 20px;
+          }
+
+          .address {
+            color: #333;
+
+            i {
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+
+      .description-clinic-bt {
+        height       : 42px;
+        border       : none;
+        outline      : none;
+        background   : #fff04b;
+        min-width    : 120px;
+        border-radius: 3px;
+        font-weight  : 500;
+        color        : #333;
+
+      }
+    }
+
+  }
+
+  .detail-clinic-body {
+    padding         : 15px 100px 0;
+    background-color: #eee;
+    display         : flex;
+    flex-direction  : column;
+
+    .each-doctor {
+      display         : flex;
+      width           : 100%;
+      min-height      : 300px;
+      padding         : 15px;
+      margin-bottom   : 15px;
+      background-color: #fff;
+      box-shadow      : 0 1px 6px #20212447;
+      border-radius   : 8px;
+
+      .dt-content-left {
+        width       : 50%;
+        border-right: 1px solid #ddd;
+
+        .profile-doctor-container {
+          .up {
+            font-size: 16px;
+            color    : #45c3d2;
+          }
+
+          .down {
+            padding: 5px;
+          }
+
+          .view-detail-doctor a {
+            display        : inline-block;
+            margin-top     : 5px;
+            margin-left    : 15px;
+            color          : #45c3d2;
+            text-decoration: none;
+          }
+        }
+
+      }
+
+      .dt-content-right {
+        width  : 50%;
+        padding: 10px;
+
+        .doctor-schedule {
+          .doctor-schedule-container {
+            border-right: unset !important;
+          }
+        }
+
+        .doctor-extra-info {
+          border-top : 1px solid #ddd;
+          margin-top : 10px;
+          padding-top: 10px;
+        }
+
+
+      }
+    }
+
+  }
+}

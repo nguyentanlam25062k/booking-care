@@ -23,11 +23,11 @@ module.exports = (sequelize, DataTypes) => {
             descriptionHTMLStrength: DataTypes.TEXT,
             descriptionMarkdownStrength: DataTypes.TEXT,
 
-            descriptionHTMLStrengthEquipment: DataTypes.TEXT,
-            descriptionMarkdownStrengthEquipment: DataTypes.TEXT,
+            descriptionHTMLEquipment: DataTypes.TEXT,
+            descriptionMarkdownEquipment: DataTypes.TEXT,
 
-            descriptionHTMLAddLocation: DataTypes.TEXT,
-            descriptionMarkdownAddLocation: DataTypes.TEXT,
+            descriptionHTMLLocation: DataTypes.TEXT,
+            descriptionMarkdownLocation: DataTypes.TEXT,
 
             descriptionHTMLProcess: DataTypes.TEXT,
             descriptionMarkdownProcess: DataTypes.TEXT

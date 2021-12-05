@@ -1,0 +1,15 @@
+.clinic-child {
+    cursor: pointer;
+
+    .clinic-name {
+        margin            : 10px 0;
+        display           : -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow          : hidden;
+
+        &:hover {
+            color: #45c3d2;
+        }
+    }
+}
