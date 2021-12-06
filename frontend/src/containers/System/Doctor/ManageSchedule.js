@@ -134,7 +134,6 @@ class ManageSchedule extends Component {
         if (res && res.errCode === 0) {
             toast.success('Create schedule success!')
         }
-        console.log('res from server', res)
     }
 
     render() {
@@ -142,7 +141,6 @@ class ManageSchedule extends Component {
         let { language } = this.props
         let yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
 
-        console.log('check rangeTime', rangeTime)
         return (
             <div className='manage-schedule-container'>
                 <div className='m-s-title'>

@@ -1,16 +1,17 @@
 [id="workbench.parts.editor"] .split-view-view:nth-child(1) .editor-container .editor-instance>.monaco-editor .overflow-guard>.monaco-scrollable-element::before {
   position: absolute;
-  content: '';
-    width: 100%;
-    height: 100%;
-    opacity: 0.2;
-    background: linear-gradient(
-    45deg,
-    rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0)
-  ),url(https://github.com/nguyentanlam25062k/images/blob/main/nguyen_thu_hien.jpg?raw=true) center bottom / cover no-repeat;
+  content : '';
+  width   : 100%;
+  height  : 100%;
+  opacity : 0.2;
+  background: linear-gradient(45deg,
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0)), url(https://github.com/nguyentanlam25062k/images/blob/main/nguyen_thu_hien.jpg?raw=true) right bottom / cover no-repeat;
 }
 
 /* .monaco-editor .cursors-layer .cursor {
     background-color: red
 } */
+
+/* https://github.com/nguyentanlam25062k/images/blob/main/thanh_truc_01.jpg?raw=true */
+/* https://github.com/nguyentanlam25062k/images/blob/main/nguyen_thu_hien.jpg?raw=true */

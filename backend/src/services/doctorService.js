@@ -2,6 +2,7 @@ import _ from 'lodash'
 import db from '../models/index'
 require('dotenv').config()
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE
+import emailService from './emailService'
 
 let getTopDoctorHome = (limitInput) => {
     return new Promise(async (resolve, reject) => {
@@ -429,11 +430,53 @@ let getListPatientForDoctor = (doctorId, date) => {
                                     attributes: ['valueEn', 'valueVi']
                                 }
                             ]
+                        },
+                        {
+                            model: db.Allcode,
+                            as: 'timeTypeDataPatient',
+                            attributes: ['valueEn', 'valueVi']
                         }
                     ],
                     raw: false,
                     nest: true
                 })
+                resolve({
+                    errCode: 0,
+                    data: data
+                })
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+let sendRemedy = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { doctorId, email, patientId, timeType, imageBase64 } = data
+            if (!doctorId || !email || !patientId || !timeType || !imageBase64) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+                // update status
+                let appointment = await db.Booking.findOne({
+                    where: {
+                        doctorId,
+                        patientId,
+                        timeType,
+                        statusId: 'S2'
+                    },
+                    raw: false
+                })
+                if (appointment) {
+                    appointment.statusId = 'S3'
+                    await appointment.save()
+                }
+                // send email remedy
+                await emailService.sendAttachment(data)
                 resolve({
                     errCode: 0,
                     data: data
@@ -455,5 +498,6 @@ module.exports = {
     getScheduleByDate,
     getExtraInfoDoctorById,
     getProfileDoctorById,
-    getListPatientForDoctor
+    getListPatientForDoctor,
+    sendRemedy
 }
