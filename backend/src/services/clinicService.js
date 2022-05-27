@@ -1,5 +1,6 @@
+import _ from 'lodash'
 import db from '../models/index'
-
+const { Op } = require('sequelize')
 let createClinic = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -7,6 +8,7 @@ let createClinic = (data) => {
                 name,
                 imageBase64,
                 address,
+                action,
 
                 descriptionHTMLIntro,
                 descriptionMarkdownIntro,
@@ -24,37 +26,88 @@ let createClinic = (data) => {
                 descriptionMarkdownProcess
             } = data
 
-            if (!name || !imageBase64 || !address || !descriptionHTMLIntro || !descriptionMarkdownIntro) {
+            if (!name || !imageBase64 || !address || !descriptionHTMLIntro || !descriptionMarkdownIntro || !action) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing parameter'
                 })
             } else {
-                await db.Clinic.create({
-                    name: name,
-                    image: imageBase64,
-                    address: address,
+                if (action === 'CREATE') {
+                    await db.Clinic.create({
+                        name: name,
+                        image: imageBase64,
+                        address: address,
 
-                    descriptionHTMLIntro: descriptionHTMLIntro,
-                    descriptionMarkdownIntro: descriptionMarkdownIntro,
+                        descriptionHTMLIntro: descriptionHTMLIntro,
+                        descriptionMarkdownIntro: descriptionMarkdownIntro,
 
-                    descriptionHTMLStrength: descriptionHTMLStrength,
-                    descriptionMarkdownStrength: descriptionMarkdownStrength,
+                        descriptionHTMLStrength: descriptionHTMLStrength,
+                        descriptionMarkdownStrength: descriptionMarkdownStrength,
 
-                    descriptionHTMLStrengthEquipment: descriptionHTMLStrengthEquipment,
-                    descriptionMarkdownStrengthEquipment: descriptionMarkdownStrengthEquipment,
+                        descriptionHTMLStrengthEquipment: descriptionHTMLStrengthEquipment,
+                        descriptionMarkdownStrengthEquipment: descriptionMarkdownStrengthEquipment,
 
-                    descriptionHTMLAddLocation: descriptionHTMLAddLocation,
-                    descriptionMarkdownAddLocation: descriptionMarkdownAddLocation,
+                        descriptionHTMLAddLocation: descriptionHTMLAddLocation,
+                        descriptionMarkdownAddLocation: descriptionMarkdownAddLocation,
 
-                    descriptionHTMLProcess: descriptionHTMLProcess,
-                    descriptionMarkdownProcess: descriptionMarkdownProcess
-                })
+                        descriptionHTMLProcess: descriptionHTMLProcess,
+                        descriptionMarkdownProcess: descriptionMarkdownProcess
+                    })
+                    resolve({
+                        errCode: 0,
+                        errMessage: 'Create a new clinic success!'
+                    })
+                } else {
+                    // action === 'UPDATE'
+                    let { idClinic } = data
+                    if (idClinic) {
+                        let clinic = await db.Clinic.findOne({
+                            where: {
+                                id: idClinic
+                            },
+                            raw: false
+                        })
+                        if (clinic) {
+                            clinic.set({
+                                name: name,
+                                image: imageBase64,
+                                address: address,
 
-                resolve({
-                    errCode: 0,
-                    errMessage: 'Create a new specialty success!'
-                })
+                                descriptionHTMLIntro: descriptionHTMLIntro,
+                                descriptionMarkdownIntro: descriptionMarkdownIntro,
+
+                                descriptionHTMLStrength: descriptionHTMLStrength,
+                                descriptionMarkdownStrength: descriptionMarkdownStrength,
+
+                                descriptionHTMLStrengthEquipment: descriptionHTMLStrengthEquipment,
+                                descriptionMarkdownStrengthEquipment: descriptionMarkdownStrengthEquipment,
+
+                                descriptionHTMLAddLocation: descriptionHTMLAddLocation,
+                                descriptionMarkdownAddLocation: descriptionMarkdownAddLocation,
+
+                                descriptionHTMLProcess: descriptionHTMLProcess,
+                                descriptionMarkdownProcess: descriptionMarkdownProcess
+                            })
+
+                            await clinic.save()
+
+                            resolve({
+                                errCode: 0,
+                                errMessage: 'Update a clinic success!'
+                            })
+                        } else {
+                            resolve({
+                                errCode: 2,
+                                errMessage: `Can't find a clinic`
+                            })
+                        }
+                    } else {
+                        resolve({
+                            errCode: 3,
+                            errMessage: 'Missing parameter'
+                        })
+                    }
+                }
             }
         } catch (e) {
             reject(e)
@@ -66,7 +119,7 @@ let getAllClinic = () => {
     return new Promise(async (resolve, reject) => {
         try {
             let data = []
-            data = await db.Clinic.findAll()
+            data = await db.Clinic.findAll({})
 
             if (data && data.length > 0) {
                 data = data.map((item) => ({ ...item, image: new Buffer(item.image, 'base64').toString('binary') }))
@@ -77,6 +130,42 @@ let getAllClinic = () => {
                 errMessage: 'Get success all specialty',
                 data: data
             })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+let deleteClinicById = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { clinicId } = data
+            console.log('check clinicId', clinicId)
+            if (!clinicId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+                let clinic = await db.Clinic.findOne({
+                    where: {
+                        id: clinicId
+                    },
+                    raw: false
+                })
+                if (clinic) {
+                    await clinic.destroy()
+                    resolve({
+                        errCode: 0,
+                        errMessage: `Deleted clinic success`
+                    })
+                } else {
+                    resolve({
+                        errCode: 2,
+                        errMessage: `Can't not found clinic`
+                    })
+                }
+            }
         } catch (e) {
             reject(e)
         }
@@ -96,7 +185,9 @@ let getDetailClinicById = (inputId) => {
                     where: {
                         id: inputId
                     },
-                    attributes: ['descriptionHTMLIntro', 'descriptionMarkdownIntro', 'image', 'address', 'name']
+                    attributes: {
+                        exclude: ['password']
+                    }
                 })
 
                 if (data) {
@@ -127,8 +218,115 @@ let getDetailClinicById = (inputId) => {
     })
 }
 
+let getClinicByPagination = (page, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!page || !limit) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+                let data = {}
+                let startIndex = (page - 1) * limit
+                let endIndex = page * limit
+
+                const { count, rows } = await db.Clinic.findAndCountAll({
+                    attributes: {
+                        exclude: ['password']
+                    },
+                    offset: startIndex,
+                    limit: +limit
+                })
+                data.count = count
+                data.rows = rows
+
+                if (data?.rows?.length > 0) {
+                    data.rows = data.rows.map((item) => ({
+                        ...item,
+                        image: new Buffer(item.image, 'base64').toString('binary')
+                    }))
+                }
+
+                if (count > 0) {
+                    resolve({
+                        errCode: 0,
+                        errMessage: 'Get success all clinic',
+                        data: data
+                    })
+                } else {
+                    resolve({
+                        errCode: 2,
+                        errMessage: `Can't found clinic`,
+                        data: data
+                    })
+                }
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+let searchClinic = (term, page, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!page || !limit) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+                let data = {}
+                let startIndex = (page - 1) * limit
+                let endIndex = page * limit
+                const { count, rows } = await db.Clinic.findAndCountAll({
+                    where: {
+                        name: {
+                            [Op.like]: `%${term}%`
+                        }
+                    },
+                    attributes: {
+                        exclude: ['password']
+                    },
+                    offset: startIndex,
+                    limit: +limit
+                })
+                data.count = count
+                data.rows = rows
+
+                if (data?.rows?.length > 0) {
+                    data.rows = data.rows.map((item) => ({
+                        ...item,
+                        image: new Buffer(item.image, 'base64').toString('binary')
+                    }))
+                }
+
+                if (count > 0) {
+                    resolve({
+                        errCode: 0,
+                        errMessage: 'Get success all clinic',
+                        data: data
+                    })
+                } else {
+                    resolve({
+                        errCode: 2,
+                        errMessage: `Can't found clinic`,
+                        data: data
+                    })
+                }
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
     createClinic,
     getAllClinic,
-    getDetailClinicById
+    deleteClinicById,
+    getDetailClinicById,
+    getClinicByPagination,
+    searchClinic
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Modal } from 'reactstrap'
 import DatePicker from '../../../../components/Input/DatePicker'
 import ProfileDoctor from '../ProfileDoctor'
 import * as actions from '../../../../store/actions'
@@ -13,6 +13,7 @@ import { postPatientAppointment } from '../../../../services/userService'
 import { toast } from 'react-toastify'
 import _ from 'lodash'
 import moment from 'moment'
+import { withRouter } from 'react-router'
 
 class BookingModal extends Component {
     constructor(props) {
@@ -33,6 +34,10 @@ class BookingModal extends Component {
 
     async componentDidMount() {
         this.props.getGenders()
+        let doctorId = this.props.match.params.id
+        this.setState({
+            doctorId: doctorId
+        })
     }
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
@@ -138,7 +143,7 @@ class BookingModal extends Component {
             selectedGender: selectedGender.value,
             date: dataTime.date,
             birthday: date,
-            doctorId,
+            doctorId: doctorId,
             timeType,
             language,
             timeString,
@@ -294,4 +299,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingModal)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BookingModal))

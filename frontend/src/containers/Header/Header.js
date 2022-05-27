@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import * as actions from '../../store/actions'
-import Navigator from '../../components/Navigator'
 import { adminMenu, doctorMenu } from './menuApp'
 import { LANGUAGES, USER_ROLE } from '../../utils'
 import { FormattedMessage } from 'react-intl'
@@ -48,12 +47,19 @@ class Header extends Component {
     render() {
         const { processLogout, language, userInfo } = this.props
         return (
-            <div className='header-container'>
+            <div className='header-container container'>
                 {/* thanh navigator */}
-                <div className='header-tabs-container'>
+                {/* <div className='header-tabs-container'>
                     <Navigator menus={this.state.menuApp} />
+                </div> */}
+                <div className='header-left'>
+                    <div className='header-search'>
+                        <input type='text' placeholder='Search for...' />
+                        <button>
+                            <i className='fas fa-search'></i>
+                        </button>
+                    </div>
                 </div>
-
                 <div className='languages'>
                     <div className='welcome'>
                         <FormattedMessage id='home-header.welcome' />

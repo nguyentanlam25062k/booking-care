@@ -12,7 +12,6 @@ import {
     saveDetailDoctorService
 } from '../../services/userService'
 import { toast } from 'react-toastify'
-import { css } from 'glamor'
 
 export const fetchGenderStart = () => {
     return async (dispatch, getState) => {

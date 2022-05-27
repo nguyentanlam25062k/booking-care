@@ -1,0 +1,70 @@
+.sidebar {
+    padding   : 15px;
+    width     : 300px;
+    background: linear-gradient(90deg, #0059B2, #007FFF 120%), url(https://github.com/nguyentanlam25062k/images/blob/main/nguyen_thu_hien.jpg?raw=true) no-repeat fixed center center;
+    color     : #fff;
+
+    &-header {
+        display      : flex;
+        align-items  : baseline;
+        padding      : 15px 0;
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(#fff, .3);
+
+    }
+
+    &-shield {
+        font-size   : 45px;
+        margin-right: 15px;
+
+    }
+
+    &-title {
+        line-height  : unset;
+        margin-bottom: unset;
+    }
+
+    &-list {
+        list-style  : none;
+        padding-left: unset;
+
+    }
+
+    &-item {
+        &:nth-child(n) {
+            padding-bottom: 15px;
+            padding-left  : 15px;
+            margin-bottom : 15px;
+            border-bottom : 1px solid rgba(#fff, .3);
+
+        }
+    }
+
+    &-link {
+        text-decoration: none;
+        color          : rgba(#fff, .8);
+
+        &:hover,
+        &.active {
+            color         : rgba(#fff, 1);
+            transition    : all .25s ease;
+            font-weight   : bold;
+            font-size     : 15px;
+            letter-spacing: 0.1em;
+        }
+    }
+
+    &-icon {
+        display     : inline-block;
+        margin-right: 10px;
+
+        i {
+            font-size: 14px;
+            width    : 14px;
+            height   : 14px;
+        }
+    }
+
+    &-text {}
+
+}

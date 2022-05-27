@@ -1,0 +1,12 @@
+.system {
+  display   : flex;
+  min-height: 100%;
+
+  &-list {
+    padding-bottom: 200px;
+  }
+
+  &-container {
+    width: 100%;
+  }
+}

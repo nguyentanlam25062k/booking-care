@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
-import Slider from 'react-slick'
 
 class HomeFooter extends Component {
     render() {
@@ -9,7 +7,7 @@ class HomeFooter extends Component {
             <div className='home-footer'>
                 <p>
                     &copy; 2021 Hỏi Dân IT với Eric. More information, pleas visit my youtube chanel.
-                    <a href='#'>&larr; Click here! &rarr;</a>
+                    <a href='https://www.youtube.com/watch?v=Sh48o2XGFlg'>&larr; Click here! &rarr;</a>
                 </p>
             </div>
         )

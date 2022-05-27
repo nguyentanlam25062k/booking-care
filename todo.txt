@@ -1,51 +1,31 @@
 
-
 let users = [
-    { 
-        email: 'user01@gmail.com', 
-        password: '123456', 
-        firstName: 'lam', 
-        lastName: 'nguyen' 
-    },
-    { 
-        email: 'user02@gmail.com', 
-        password: '123456', 
-        firstName: 'teo', 
-        lastName: 'ho' 
-    },
-    { 
-        email: 'user03@gmail.com', 
-        password: '123456', 
-        firstName: 'vu', 
-        lastName: 'phan'
-     }
+    {id: 1, roleId: 'R1', name: 'lam'},
+    {id: 2, roleId: 'R2', name: 'long'},
+    {id: 3, roleId: 'R3', name: 'teo'},
+    {id: 4, roleId: 'R1', name: 'thuong'},
+    {id: 5, roleId: 'R2', name: 'nhan'},
 ]
-
-
 
 let users2 = [
     {
-        email: 'user01@gmail.com',
-        password: '123456',
-        firstName: 'lam',
-        lastName: 'nguyen',
-        nameVi: 'nguyen lam',
-        nameEn: 'lam nguyen'
+        roleId: 'R1',
+        user: [
+            {id: 1, roleId: 'R1', name: 'lam'},
+            {id: 4, roleId: 'R1', name: 'thuong'},
+        ]
     },
     {
-        email: 'user02@gmail.com',
-        password: '123456',
-        firstName: 'teo',
-        lastName: 'ho',
-        nameVi: 'ho teo',
-        nameEn: 'teo ho'
+        roleId: 'R2',
+        user: [
+            {id: 2, roleId: 'R2', name: 'long'},
+            {id: 5, roleId: 'R2', name: 'nhan'},
+        ]
     },
     {
-        email: 'user03@gmail.com',
-        password: '123456',
-        firstName: 'vu',
-        lastName: 'phan',
-        nameVi: 'phan vu',
-        nameEn: 'vu phan'
-    }
+        roleId: 'R1',
+        user: [
+            {id: 3, roleId: 'R3', name: 'teo'},
+        ]
+    },
 ]

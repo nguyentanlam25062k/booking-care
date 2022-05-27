@@ -17,7 +17,15 @@ class DefaultClass extends Component {
     }
 
     render() {
-        return <div>Hello word from DefaultClass</div>
+        return (
+            <div
+                style={{
+                    marginTop: '200px'
+                }}
+            >
+                Hello word from DefaultClass
+            </div>
+        )
     }
 }
 

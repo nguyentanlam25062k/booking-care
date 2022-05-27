@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 import * as actions from '../../store/actions'
-
+import Girl from '../.././assets/bookingcare-2020.svg'
 import './Login.scss'
-import { FormattedMessage } from 'react-intl'
 import { handleLoginApi } from '../../services/userService'
-
+import { withRouter } from 'react-router'
+import { FaFacebookF, FaGoogle } from 'react-icons/fa'
 class Login extends Component {
     constructor(props) {
         super(props)
@@ -38,13 +38,12 @@ class Login extends Component {
         let { username, password } = this.state
         try {
             let data = await handleLoginApi(username, password)
-            if (data && data.errCode !== 0) {
+
+            if (data && data.errCode === 0) {
+                this.props.userLoginSuccess(data.user)
                 this.setState({
                     errMessage: data.message
                 })
-            }
-            if (data && data.errCode === 0) {
-                this.props.userLoginSuccess(data.user)
             }
         } catch (e) {
             if (e.response) {
@@ -76,7 +75,7 @@ class Login extends Component {
                     <div className='login-content row'>
                         <div className='col-12 text-login'>Login</div>
                         <div className='col-12 form-group login-input'>
-                            <label>User name:</label>
+                            {/* <label>User name:</label> */}
                             <input
                                 type='text'
                                 className='form-control'
@@ -86,7 +85,7 @@ class Login extends Component {
                             />
                         </div>
                         <div className='col-12 form-group login-input'>
-                            <label>Password:</label>
+                            {/* <label>Password:</label> */}
                             <div className='custom-input-password'>
                                 <input
                                     type={this.state.isShowPassword ? 'text' : 'password'}
@@ -97,7 +96,12 @@ class Login extends Component {
                                     onKeyDown={(e) => this.handleKeyDown(e)}
                                 />
                                 <span onClick={() => this.handleShowHidePassword()}>
-                                    <i className={this.state.isShowPassword ? 'fas fa-eye' : 'fas fa-eye-slash'}></i>
+                                    <i
+                                        className={this.state.isShowPassword ? 'fas fa-eye' : 'fas fa-eye-slash'}
+                                        style={{
+                                            color: '#00000050'
+                                        }}
+                                    ></i>
                                 </span>
                             </div>
                         </div>
@@ -112,13 +116,35 @@ class Login extends Component {
                         <div className='col-12'>
                             <span className='forgot-password'>Forgot password ?</span>
                         </div>
-                        <div className='col-12 text-center mt-3'>
-                            <span className='text-other-login'>Or login with:</span>
-                        </div>
+                        <span className='text-other-login'>Or login with:</span>
+
                         <div className='col-12 social-login'>
-                            <i className='fab fa-google-plus-g google'></i>
-                            <i className='fab fa-facebook-f facebook'></i>
+                            <div className='google'>
+                                <FaFacebookF />
+                            </div>
+                            <div className='facebook'>
+                                <FaGoogle />
+                            </div>
+
+                            {/* <i className='fab fa-google-plus-g google'></i>
+                            <i className='fab fa-facebook-f facebook'></i> */}
                         </div>
+                    </div>
+                    <div className='login-content-right'>
+                        <div
+                            className='logo'
+                            // style={{
+                            //     background: URL(`${Girl}`)
+                            // }}
+                        >
+                            <img src={Girl} alt='' />
+                        </div>
+                        <div className='text'>
+                            BookingCare là Nền tảng Y tế Chăm sóc sức khỏe toàn diện kết nối người dùng với dịch vụ y tế
+                            - chăm sóc sức khỏe hiệu quả, tin cậy
+                        </div>
+                        <div className='signature-first-name'>--- hom nay tao buon ---</div>
+                        <div className='signature-last-name'>lam</div>
                     </div>
                 </div>
             </div>
@@ -128,7 +154,8 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        language: state.app.language
+        language: state.app.language,
+        userInfo: state.user.userInfo
     }
 }
 
@@ -140,4 +167,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))

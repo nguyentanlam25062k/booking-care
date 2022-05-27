@@ -3,14 +3,16 @@ import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import Select from 'react-select'
 import * as actions from '../../../store/actions'
-import { LANGUAGES, CRUD_ACTIONS, dateFormat } from '../../../utils/constant'
+import { LANGUAGES } from '../../../utils/constant'
 
 import './ManageSchedule.scss'
 import DatePicker from '../../../components/Input/DatePicker'
-import moment from 'moment'
 import { toast } from 'react-toastify'
 import _ from 'lodash'
 import { saveBulkScheduleDoctor } from '../../../services/userService'
+
+import { GiSandsOfTime } from 'react-icons/gi'
+import LoadingOverlay from 'react-loading-overlay'
 
 class ManageSchedule extends Component {
     constructor(props) {
@@ -19,7 +21,8 @@ class ManageSchedule extends Component {
             listDoctors: [],
             selectedDoctor: {},
             currentDate: '',
-            rangeTime: []
+            rangeTime: [],
+            isShowLoading: false
         }
     }
 
@@ -124,7 +127,9 @@ class ManageSchedule extends Component {
                 return
             }
         }
-
+        await this.setState({
+            isShowLoading: true
+        })
         let res = await saveBulkScheduleDoctor({
             arrSchedule: result,
             doctorId: selectedDoctor.value,
@@ -133,64 +138,92 @@ class ManageSchedule extends Component {
 
         if (res && res.errCode === 0) {
             toast.success('Create schedule success!')
+        } else {
+            toast.error('Some thing wrong!...')
         }
+        await this.setState({
+            isShowLoading: false
+        })
     }
 
     render() {
-        let { listDoctors, selectedDoctor, rangeTime } = this.state
+        let { listDoctors, selectedDoctor, rangeTime, isShowLoading } = this.state
         let { language } = this.props
         let yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
+        console.log('>>>>>>>> check isShowLoading', isShowLoading)
 
         return (
-            <div className='manage-schedule-container'>
-                <div className='m-s-title'>
+            <LoadingOverlay active={isShowLoading} spinner text='Loading...'>
+                <div className='manage-schedule-container'>
+                    <div className='container py-15'>
+                        <div className='ms-header'>
+                            <div className='ms-title manage-title'>
+                                <i
+                                    className='far fa-calendar-alt'
+                                    style={{
+                                        marginRight: '5px'
+                                    }}
+                                ></i>
+                                Quản lí lịch hẹn
+                            </div>
+                            <div className='ms-heading manage-heading mb-5'>Tạo mới thông tin lịch hẹn</div>
+                        </div>
+                        {/* <div className='m-s-title'>
                     <FormattedMessage id='manage-schedule.title' />
-                </div>
-                <div className='container'>
-                    <div className='row'>
-                        <div className='col-6 form-group'>
-                            <label>
-                                <FormattedMessage id='manage-schedule.choose-doctor' />
-                            </label>
-                            <Select value={selectedDoctor} onChange={this.handleChangeSelect} options={listDoctors} />
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                                <FormattedMessage id='manage-schedule.choose-date' />
-                            </label>
-                            <DatePicker
-                                onChange={this.handleOnChangeDatePicker}
-                                className='form-control'
-                                value={this.state.currentDate}
-                                minDate={yesterday}
-                            />
-                        </div>
-                        <div className='col-12 pick-hour-container'>
-                            {rangeTime &&
-                                rangeTime.length > 0 &&
-                                rangeTime.map((item, index) => (
+                </div> */}
+                        <div className='container'>
+                            <div className='row'>
+                                <div className='col-6 form-group'>
+                                    <label>
+                                        <FormattedMessage id='manage-schedule.choose-doctor' />
+                                    </label>
+                                    <Select
+                                        value={selectedDoctor}
+                                        onChange={this.handleChangeSelect}
+                                        options={listDoctors}
+                                    />
+                                </div>
+                                <div className='col-6 form-group'>
+                                    <label>
+                                        <FormattedMessage id='manage-schedule.choose-date' />
+                                    </label>
+                                    <DatePicker
+                                        onChange={this.handleOnChangeDatePicker}
+                                        className='form-control'
+                                        value={this.state.currentDate}
+                                        minDate={yesterday}
+                                    />
+                                </div>
+                                <div className='col-12 pick-hour-container'>
+                                    {rangeTime &&
+                                        rangeTime.length > 0 &&
+                                        rangeTime.map((item, index) => (
+                                            <button
+                                                className={
+                                                    item.isSelected === true
+                                                        ? 'btn btn-schedule active'
+                                                        : 'btn btn-schedule'
+                                                }
+                                                key={index}
+                                                onClick={() => this.handleClickBtnTime(item)}
+                                            >
+                                                {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+                                            </button>
+                                        ))}
+                                </div>
+                                <div className='col-12'>
                                     <button
-                                        className={
-                                            item.isSelected === true ? 'btn btn-schedule active' : 'btn btn-schedule'
-                                        }
-                                        key={index}
-                                        onClick={() => this.handleClickBtnTime(item)}
+                                        className='btn btn-primary btn-save-schedule'
+                                        onClick={() => this.handleSaveSchedule()}
                                     >
-                                        {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+                                        <FormattedMessage id='manage-schedule.save' />
                                     </button>
-                                ))}
-                        </div>
-                        <div className='col-12'>
-                            <button
-                                className='btn btn-primary btn-save-schedule'
-                                onClick={() => this.handleSaveSchedule()}
-                            >
-                                <FormattedMessage id='manage-schedule.save' />
-                            </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </LoadingOverlay>
         )
     }
 }

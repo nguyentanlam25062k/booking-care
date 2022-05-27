@@ -1,34 +1,42 @@
 .login-background {
     // background: rgb(34, 193, 195);
-    height    : 100vh;
-    background: linear-gradient(135deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+    height         : 100vh;
+    background     : linear-gradient(45deg, rgba(0, 0, 0, .8), rgba(0, 0, 0, .3)), url('http://localhost:3000/static/media/banner-background.827fd54e.jpg') center / cover no-repeat, ;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
 
     .login-container {
-        width           : 400px;
-        border-radius   : 10px;
-        border-radius   : 10px;
+        width           : 700px;
+        height          : 500px;
         background-color: #fff;
-        position        : absolute;
-        margin          : auto;
-        top             : 0;
-        bottom          : 0;
-        right           : 0;
-        left            : 0;
-        height          : 450px;
+        display         : flex;
 
 
         .login-content {
-            padding: 10px;
+            padding: 30px;
 
             .text-login {
                 text-align : center;
                 font-weight: 600;
-                font-size  : 24px;
+                font-size  : 26px;
                 padding-top: 10px;
+                color      : #3072ff;
             }
 
             .login-input {
                 margin: 7px 0;
+
+                input {
+                    border       : none;
+                    border-bottom: 1px solid rgba(hsl(0, 0%, 0%), .3);
+                    outline      : none !important;
+
+                    &:focus {
+                        outline   : none;
+                        box-shadow: none;
+                    }
+                }
 
                 .custom-input-password {
                     position: relative;
@@ -43,32 +51,45 @@
             }
 
             .btn-login {
-                width        : 100%;
-                margin       : 10px 0;
-                height       : 30px;
-                border-radius: 15px;
-                outline      : none;
-                border       : none;
-                color        : #fff;
-                background   : linear-gradient(135deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+                width     : 100%;
+                margin    : 10px 0;
+                height    : 48px;
+                outline   : none;
+                border    : none;
+                color     : #fff;
+                background: linear-gradient(135deg, rgba(34, 193, 195, 1) 0%, rgba(#3072ff, 1));
             }
 
             .forgot-password {
-                font-size: 12px;
+                font-size : 12px;
+                transition: all .2s ease;
+
+                &:hover {
+                    color         : #3072ff;
+                    letter-spacing: 1px;
+                }
+            }
+
+            .text-other-login {
+                display    : block;
+                width      : max-content;
+                margin     : 0 auto;
+                line-height: 1;
+                color      : #666;
             }
 
             .social-login {
                 display        : flex;
                 justify-content: center;
                 align-items    : center;
-                margin-top     : 10px;
 
                 .google {
-                    font-size      : 30px;
+                    cursor         : pointer;
+                    font-size      : 20px;
                     background     : #c32424;
                     border-radius  : 50%;
-                    height         : 50px;
-                    width          : 50px;
+                    height         : 40px;
+                    width          : 40px;
                     display        : flex;
                     align-items    : center;
                     justify-content: center;
@@ -77,16 +98,64 @@
                 }
 
                 .facebook {
-                    font-size      : 30px;
+                    cursor         : pointer;
+                    font-size      : 20px;
                     background     : #3072ff;
                     border-radius  : 50%;
-                    height         : 50px;
-                    width          : 50px;
+                    height         : 40px;
+                    width          : 40px;
                     display        : flex;
                     align-items    : center;
                     justify-content: center;
                     color          : #fff;
                 }
+            }
+        }
+
+
+
+        .login-content-right {
+            max-width      : 45%;
+            height         : 100%;
+            padding        : 15px;
+            display        : flex;
+            align-items    : center;
+            justify-content: center;
+            flex-direction : column;
+            color          : #fff;
+            background     : linear-gradient(90deg, #0059B2, #007FFF), url(https://github.com/nguyentanlam25062k/images/blob/main/nguyen_thu_hien.jpg?raw=true) center / cover no-repeat;
+
+            >.logo {
+                margin-bottom: 30px;
+
+                >img {
+                    filter             : brightness(0) invert(1);
+                    width              : 200px;
+                    height             : auto;
+                    // border-radius   : 50%;
+
+                }
+            }
+
+            >.text {
+                // text-align   : justify;
+                margin-bottom: 30px;
+                width        : 95%;
+            }
+
+            >.signature-first-name {
+                margin-left : auto;
+                margin-right: 15px;
+                font-size   : 16px;
+                font-weight : 500;
+                font-style  : italic;
+
+            }
+
+            >.signature-last-name {
+                margin-left : auto;
+                margin-right: 80px;
+
             }
         }
     }

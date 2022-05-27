@@ -68,7 +68,17 @@ let getAllUsers = (userId) => {
                 users = await db.User.findAll({
                     attributes: {
                         exclude: ['password']
-                    }
+                    },
+
+                    include: [
+                        {
+                            model: db.Allcode,
+                            as: 'positionData',
+                            attributes: ['valueVi', 'valueEn']
+                        }
+                    ],
+                    raw: true,
+                    nest: true
                 })
             }
             if (userId && userId !== 'ALL') {
@@ -221,6 +231,34 @@ let getAllCodeService = (typeInput) => {
     })
 }
 
+let getUserByRole = (roleId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!roleId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+                let user = await db.User.findAll({
+                    where: {
+                        roleId: roleId
+                    },
+                    attributes: {
+                        exclude: ['password']
+                    }
+                })
+                resolve({
+                    user: user,
+                    errCode: 0
+                })
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 let base = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -245,5 +283,6 @@ module.exports = {
     createNewUser,
     deleteUser,
     updateUser,
-    getAllCodeService
+    getAllCodeService,
+    getUserByRole
 }

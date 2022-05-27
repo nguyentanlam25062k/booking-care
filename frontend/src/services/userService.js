@@ -68,6 +68,8 @@ const postVerifyAppointment = (data) => {
     return axios.post(`/api/verify-book-appointment`, data)
 }
 
+// =================== SPECIALTY ===================
+
 const createNewSpecialty = (data) => {
     return axios.post(`/api/create-new-specialty`, data)
 }
@@ -80,6 +82,20 @@ const getDetailSpecialtyById = (data) => {
     return axios.get(`/api/get-specialty-by-id?specialtyId=${data.id}&location=${data.location}`)
 }
 
+const getSpecialtyByPagination = (page, limit = 3) => {
+    return axios.get(`/api/get-specialty-by-pagination?page=${page}&limit=${limit}`)
+}
+
+const deleteSpecialtyById = (data) => {
+    return axios.post(`/api/delete-specialty-by-id`, data)
+}
+
+const searchSpecialty = (term, page, limit) => {
+    return axios.get(`/api/search-specialty?term=${term}&page=${page}&limit=${limit}`)
+}
+
+// =================== CLINIC ===================
+
 const createNewClinic = (data) => {
     return axios.post(`/api/create-new-clinic`, data)
 }
@@ -88,9 +104,23 @@ const getAllClinic = () => {
     return axios.get(`/api/get-clinic`)
 }
 
+const getClinicByPagination = (page, limit = 3) => {
+    return axios.get(`/api/get-clinic-by-pagination?page=${page}&limit=${limit}`)
+}
+
 const getDetailClinicById = (data) => {
     return axios.get(`/api/get-clinic-by-id?clinicId=${data.id}`)
 }
+
+const deleteClinicById = (data) => {
+    return axios.post(`/api/delete-clinic-by-id`, data)
+}
+
+const searchClinic = (term, page, limit) => {
+    return axios.get(`/api/search-clinic?term=${term}&page=${page}&limit=${limit}`)
+}
+
+// =================== ===================
 
 const getAllPatientForDoctor = (data) => {
     return axios.get(`/api/get-list-patient-for-doctor?doctorId=${data.doctorId}&date=${data.date}`)
@@ -98,6 +128,14 @@ const getAllPatientForDoctor = (data) => {
 
 const postSendRemedy = (data) => {
     return axios.post(`/api/send-remedy`, data)
+}
+
+const getUserByRole = (roleId) => {
+    return axios.get(`/api/get-user-by-role?roleId=${roleId}`)
+}
+
+const searchDoctor = (term, page, limit) => {
+    return axios.get(`/api/search-doctor?term=${term}&page=${page}&limit=${limit}`)
 }
 
 export {
@@ -124,5 +162,13 @@ export {
     getAllClinic,
     getDetailClinicById,
     getAllPatientForDoctor,
-    postSendRemedy
+    postSendRemedy,
+    getUserByRole,
+    getClinicByPagination,
+    deleteClinicById,
+    searchClinic,
+    searchDoctor,
+    deleteSpecialtyById,
+    searchSpecialty,
+    getSpecialtyByPagination
 }

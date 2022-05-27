@@ -96,6 +96,7 @@ let postBookAppointment = (data) => {
                             token: token
                         }
                     })
+                    console.log('>>>>>>>> booking', booking)
                     resolve({
                         data: booking,
                         errCode: 0,

@@ -3,6 +3,7 @@ import db from '../models/index'
 require('dotenv').config()
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE
 import emailService from './emailService'
+const { Op } = require('sequelize')
 
 let getTopDoctorHome = (limitInput) => {
     return new Promise(async (resolve, reject) => {
@@ -37,13 +38,56 @@ let getAllDoctors = () => {
             let doctors = await db.User.findAll({
                 where: { roleId: 'R2' },
                 attributes: {
-                    exclude: ['password', 'image']
+                    exclude: ['password']
+                },
+                include: [
+                    {
+                        model: db.Allcode,
+                        as: 'positionData',
+                        attributes: ['valueVi', 'valueEn']
+                    }
+                ],
+                raw: true,
+                nest: true
+            })
+            let doctorInfo = await db.Doctor_Info.findAll({
+                include: [
+                    {
+                        model: db.Specialty,
+                        as: 'specialtyData',
+                        attributes: ['name']
+                    }
+                ],
+                raw: true,
+                nest: true
+            })
+
+            let merged = []
+            for (let i = 0; i < doctors.length; i++) {
+                let specialtyFound = doctorInfo.find((item) => item.doctorId === doctors[i].id)?.specialtyData?.name
+                if (specialtyFound) {
+                    merged.push({
+                        ...doctors[i],
+                        specialtyData: {
+                            name: specialtyFound
+                        }
+                    })
+                } else {
+                    merged.push({
+                        ...doctors[i]
+                    })
                 }
-            })
-            resolve({
-                errCode: 0,
-                data: doctors
-            })
+            }
+            if (merged && merged.length > 0) {
+                merged = merged.map((item) => ({
+                    ...item,
+                    image: new Buffer(item.image, 'base64').toString('binary')
+                }))
+                resolve({
+                    errCode: 0,
+                    data: merged
+                })
+            }
         } catch (e) {
             reject(e)
         }
@@ -137,7 +181,7 @@ let saveDetailInfoDoctor = (inputData) => {
                     },
                     raw: false
                 })
-
+                console.log('>>>>>>> check', doctorInfo)
                 if (doctorInfo) {
                     // update
                     doctorInfo.doctorId = doctorId
@@ -488,10 +532,100 @@ let sendRemedy = (data) => {
     })
 }
 
+let searchDoctor = (term, page, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!page || !limit) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter'
+                })
+            } else {
+                let doctors = {}
+                let startIndex = (page - 1) * limit
+                let endIndex = page * limit
+                const { count, rows } = await db.User.findAndCountAll({
+                    where: {
+                        roleId: 'R2',
+                        [Op.or]: {
+                            firstName: {
+                                [Op.like]: `%${term}%`
+                            },
+                            lastName: {
+                                [Op.like]: `%${term}%`
+                            }
+                        }
+                    },
+                    attributes: {
+                        exclude: ['password']
+                    },
+                    include: [
+                        {
+                            model: db.Allcode,
+                            as: 'positionData',
+                            attributes: ['valueVi', 'valueEn']
+                        }
+                    ],
+                    raw: true,
+                    nest: true,
+                    offset: startIndex,
+                    limit: +limit
+                })
+
+                let doctorInfo = await db.Doctor_Info.findAll({
+                    include: [
+                        {
+                            model: db.Specialty,
+                            as: 'specialtyData',
+                            attributes: ['name']
+                        }
+                    ],
+                    raw: true,
+                    nest: true
+                })
+
+                let merged = []
+                for (let i = 0; i < rows.length; i++) {
+                    let specialtyFound = doctorInfo.find((item) => item.doctorId === rows[i].id)?.specialtyData?.name
+                    if (specialtyFound) {
+                        merged.push({
+                            ...rows[i],
+                            specialtyData: {
+                                name: specialtyFound
+                            }
+                        })
+                    } else {
+                        merged.push({
+                            ...rows[i]
+                        })
+                    }
+                }
+                if (merged && merged.length > 0) {
+                    merged = merged.map((item) => ({
+                        ...item,
+                        image: new Buffer(item.image, 'base64').toString('binary')
+                    }))
+                }
+
+                let data = {
+                    count: count,
+                    rows: [...merged]
+                }
+
+                resolve({
+                    errCode: 0,
+                    data: data
+                })
+            }
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
     getTopDoctorHome,
     getAllDoctors,
-    saveDetailInfoDoctor,
     saveDetailInfoDoctor,
     getDetailDoctorById,
     bulkCreateSchedule,
@@ -499,5 +633,6 @@ module.exports = {
     getExtraInfoDoctorById,
     getProfileDoctorById,
     getListPatientForDoctor,
-    sendRemedy
+    sendRemedy,
+    searchDoctor
 }

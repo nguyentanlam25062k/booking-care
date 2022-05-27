@@ -19,7 +19,19 @@
             filter: brightness(0) invert(1);
         }
 
+        .home-header-content {
+            .center-content {
+                .sub-link {
+                    color     : #fff;
+                    transition: all .25s ease;
 
+                    &:hover {
+                        color: #20262d;
+                    }
+                }
+
+            }
+        }
     }
 
     .home-header-content {
@@ -55,11 +67,14 @@
             justify-content: space-between;
             align-items    : center;
 
-            .child-content {
-                .sub-title {
+            .sub-link {
+                text-decoration: none;
+                color          : #20262d;
+                font-weight    : 400;
+                transition     : all .25s ease;
 
-                    font-weight: 400;
-                    font-size  : 12px;
+                &:hover {
+                    color: #0d6efd;
                 }
             }
 

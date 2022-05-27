@@ -1,0 +1,175 @@
+.modal-specialty .modal {
+    &-body {
+        margin       : 30px;
+        box-shadow   : 2px 2px 4px 0 #0000004d;
+        border-radius: 8px;
+        padding      : unset;
+    }
+
+    &-tab-header {
+        background-color: #f1f1f1;
+        padding         : 15px 0 0 30px;
+        border-radius   : 8px 8px 0 0;
+        display         : flex;
+    }
+
+    &-tab {
+        display        : inline-flex;
+        align-items    : center;
+        justify-content: center;
+        border         : unset;
+        outline        : unset;
+        border-radius  : 4px 4px 0 0;
+        height         : 42px;
+        min-width      : 140px;
+        padding        : 0 15px;
+        font-size      : 16px;
+        color          : #6c757d;
+
+        >span {
+            margin-left: 5px;
+        }
+
+        &.active {
+            color           : #1890ff;
+            background-color: #fff;
+        }
+    }
+
+    &-tab-info {
+        padding: 15px 15px 30px;
+    }
+
+
+
+    &-info {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+
+        & .info-body {
+            display: flex;
+            gap    : 15px;
+        }
+
+        & .info-left {
+            width: 50%;
+        }
+
+        & .info-right {
+            width         : 50%;
+            padding-bottom: 1rem;
+
+            .form-group.error {
+                .modal-box-image {
+                    border: 1px solid #dc3545;
+                }
+            }
+
+            .modal-box-image {
+                position: relative;
+                padding : 10px;
+                height  : 150px;
+                width   : 150px;
+                color   : #1890ff;
+                border  : 1px solid rgba(#1890ff, .3);
+
+                >svg {
+                    position : absolute;
+                    top      : 50%;
+                    left     : 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+
+            .modal-image-preview {
+                height       : 100%;
+                border-radius: 6px;
+                position     : relative;
+                z-index      : 2;
+
+            }
+        }
+
+
+    }
+
+    &-box {}
+
+    &-box-heading {
+        text-align: center;
+        font-size : 20px;
+        color     : #6c757d;
+        color     : #1890ff;
+
+        >span {
+            display      : inline-block;
+            margin       : 0 auto 30px;
+            border-bottom: 1px solid rgba(#000, .1);
+        }
+
+    }
+
+
+    .form-group {
+        position: relative;
+
+
+        .border-none {
+            border: none !important;
+        }
+
+        label {
+            font-weight  : 500;
+            color        : #6c757d;
+            margin-bottom: 5px;
+        }
+
+        &.error {
+            input {
+                border: 1px solid #dc3545;
+
+                &:focus {
+                    border-color: #dc3545;
+                    box-shadow  : 0 0 0 0.25rem rgba(220, 53, 69, .25);
+                }
+            }
+
+            .error-message {
+                display: block;
+            }
+
+            .error-icon {
+                display: block;
+            }
+        }
+
+        .error-icon {
+            display : none;
+            position: absolute;
+            right   : 7px;
+            top     : 31px;
+            color   : #dc3545;
+        }
+
+        .error-message {
+            margin-top: 2px;
+            display   : none;
+            color     : #dc3545;
+            font-size : 12px;
+            font-style: italic;
+        }
+    }
+
+    &-button-create {
+        background-color: #0d6efd;
+        border-color    : #0d6efd;
+    }
+
+    &-button-edit {
+        background-color: #ffc107;
+        border-color    : #ffc107;
+    }
+}

@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
 import './DetailClinic.scss'
 import HomeHeader from '../../HomePage/HomeHeader'
-import { withRouter } from 'react-router'
 import DoctorSchedule from '../Doctor/DoctorSchedule'
 import DoctorExtraInfo from '../Doctor/DoctorExtraInfo'
 import ProfileDoctor from '../Doctor/ProfileDoctor'
-import { getAllCodeService, getDetailClinicById, getDetailSpecialtyById } from '../../../services/userService'
-import _ from 'lodash'
-import { LANGUAGES } from '../../../utils'
+import { getDetailClinicById } from '../../../services/userService'
 
 class DetailClinic extends Component {
     constructor(props) {
@@ -48,13 +44,18 @@ class DetailClinic extends Component {
     }
 
     render() {
-        // arrDoctorId: [],
-        //     dataDetailClinic: {},
-        //     showMoreDescription: false
-
         let { arrDoctorId, dataDetailClinic } = this.state
-        let { language } = this.props
-        // console.log(object)
+        let {
+            image,
+            address,
+            name,
+            descriptionHTMLIntro,
+            descriptionHTMLStrength,
+            descriptionHTMLProcess,
+            descriptionHTMLEquipment,
+            descriptionHTMLLocation
+        } = this.state.dataDetailClinic
+
         return (
             <div className='detail-clinic-container'>
                 <HomeHeader isShowBanner={false} isThemeBlue={true} />
@@ -62,7 +63,7 @@ class DetailClinic extends Component {
                     <div
                         className='background-clinic'
                         style={{
-                            background: `url(${dataDetailClinic.image}) center / cover no-repeat`
+                            background: `url(${image}) center / cover no-repeat`
                         }}
                     ></div>
                     <div className='description-clinic'>
@@ -70,19 +71,26 @@ class DetailClinic extends Component {
                             <div
                                 className='clinic-logo'
                                 style={{
-                                    background: `url(${dataDetailClinic.image}) center / cover no-repeat`
+                                    background: `url(${image}) center / cover no-repeat`
                                 }}
                             ></div>
                             <div className='clinic-info'>
-                                <h3 className='name'>Bệnh viện Hữu nghị Việt Đức</h3>
+                                <h3 className='name'>{name}</h3>
                                 <div className='address'>
-                                    <i class='fas fa-map-marker-alt'></i>
-                                    <span>Số 16-18 Phủ Doãn - Hoàn Kiếm - Hà Nội</span>
+                                    <i className='fas fa-map-marker-alt'></i>
+                                    <span>{address}</span>
                                 </div>
                             </div>
                         </div>
                         <button className='description-clinic-bt'>Đặt lịch khám</button>
                     </div>
+                </div>
+                <div className='detail-clinic-scroll'>
+                    <div className='booking'>ĐẶT LỊCH KHÁM</div>
+                    <div className='intro'>giới thiệu</div>
+                    <div className='strength'>thế mạnh chuyên môn</div>
+                    <div className='process'>quy trình khám</div>
+                    <div className='location'>giá khám bệnh</div>
                 </div>
                 <div className='detail-clinic-body'>
                     {arrDoctorId &&
@@ -110,6 +118,38 @@ class DetailClinic extends Component {
                                 </div>
                             </div>
                         ))}
+                </div>
+                <div className='detail-clinic-content container'>
+                    {descriptionHTMLIntro && (
+                        <div className='detail-clinic-intro'>
+                            <div className='heading'>GIỚI THIỆU</div>
+                            <div dangerouslySetInnerHTML={{ __html: `${descriptionHTMLIntro}` }}></div>
+                        </div>
+                    )}
+                    {descriptionHTMLStrength && (
+                        <div className='detail-clinic-strength'>
+                            <div className='heading'>Thế mạnh chuyên môn</div>
+                            <div dangerouslySetInnerHTML={{ __html: `${descriptionHTMLStrength}` }}></div>
+                        </div>
+                    )}
+                    {descriptionHTMLProcess && (
+                        <div className='detail-clinic-process'>
+                            <div className='heading'>Quy trình khám</div>
+                            <div dangerouslySetInnerHTML={{ __html: `${descriptionHTMLProcess}` }}></div>
+                        </div>
+                    )}
+                    {descriptionHTMLEquipment && (
+                        <div className='detail-clinic-equipment'>
+                            <div className='heading'>Trang thiết bị</div>
+                            <div dangerouslySetInnerHTML={{ __html: `${descriptionHTMLEquipment}` }}></div>
+                        </div>
+                    )}
+                    {descriptionHTMLLocation && (
+                        <div className='detail-clinic-location'>
+                            <div className='heading'>Vị trí</div>
+                            <div dangerouslySetInnerHTML={{ __html: `${descriptionHTMLLocation}` }}></div>
+                        </div>
+                    )}
                 </div>
             </div>
         )

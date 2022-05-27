@@ -38,6 +38,13 @@ let handleGetAllUsers = async (req, res) => {
     })
 }
 
+let getUserByRole = async (req, res) => {
+    let id = req.query.roleId
+    let users = await userService.getUserByRole(id)
+
+    return res.status(200).json(users)
+}
+
 let handleCreateNewUser = async (req, res) => {
     let message = await userService.createNewUser(req.body)
     return res.status(200).json(message)
@@ -76,6 +83,7 @@ let getAllCode = async (req, res) => {
 module.exports = {
     handleLogin,
     handleGetAllUsers,
+    getUserByRole,
     handleCreateNewUser,
     handleEditNewUser,
     handleDeleteNewUser,

@@ -7,6 +7,7 @@ import { LANGUAGES } from '../../utils'
 
 import { changeLanguageApp } from '../../store/actions'
 import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 
 class HomeHeader extends Component {
     constructor(props) {
@@ -31,7 +32,12 @@ class HomeHeader extends Component {
                     <div className='home-header-content'>
                         <div className='left-content'>
                             <i className='fas fa-bars'></i>
-                            <img className='header-logo' src={logo} onClick={() => this.returnToHome()} />
+                            <img
+                                className='header-logo'
+                                src={logo}
+                                alt={`header-logo`}
+                                onClick={() => this.returnToHome()}
+                            />
                         </div>
                         <div className='center-content'>
                             <div className='children-content'>
@@ -40,9 +46,11 @@ class HomeHeader extends Component {
                                         <FormattedMessage id='home-header.specialty' />
                                     </b>
                                 </div>
-                                <div className='sub-title'>
-                                    <FormattedMessage id='home-header.search-doctor' />
-                                </div>
+                                <Link to='/category/specialty' className='sub-link'>
+                                    <div className='sub-title'>
+                                        <FormattedMessage id='home-header.search-doctor' />
+                                    </div>
+                                </Link>
                             </div>
                             <div className='children-content'>
                                 <div>
@@ -50,19 +58,24 @@ class HomeHeader extends Component {
                                         <FormattedMessage id='home-header.health-facility' />
                                     </b>
                                 </div>
-                                <div className='sub-title'>
-                                    <FormattedMessage id='home-header.select-room' />
-                                </div>
+                                <Link to='/category/clinic' className='sub-link'>
+                                    <div className='sub-title'>
+                                        <FormattedMessage id='home-header.select-room' />
+                                    </div>
+                                </Link>
                             </div>
+
                             <div className='children-content'>
                                 <div>
                                     <b>
                                         <FormattedMessage id='home-header.doctor' />
                                     </b>
                                 </div>
-                                <div className='sub-title'>
-                                    <FormattedMessage id='home-header.select-doctor' />
-                                </div>
+                                <Link to='/category/doctor' className='sub-link'>
+                                    <div className='sub-title'>
+                                        <FormattedMessage id='home-header.select-doctor' />
+                                    </div>
+                                </Link>
                             </div>
                             <div className='children-content'>
                                 <div>
@@ -116,7 +129,7 @@ class HomeHeader extends Component {
                                 </div>
                                 <div className='options-child'>
                                     <div className='icon-child'>
-                                        <i className='far fa-mobile-alt'></i>
+                                        <i className='fas fa-briefcase-medical'></i>
                                     </div>
                                     <div className='text-child'>
                                         <FormattedMessage id='banner.child2' />

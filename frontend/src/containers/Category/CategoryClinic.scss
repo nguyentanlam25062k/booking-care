@@ -1,0 +1,95 @@
+.category-clinic {
+    .category-clinic-top {
+        padding         : 15px 0;
+        background-color: #f5f5f5;
+
+        .category-clinic-search {
+            position    : relative;
+            width       : max-content;
+            margin-left : auto;
+            margin-right: 50px;
+
+            >input {
+                outline      : none;
+                border       : 1px solid rgba(#000, .1);
+                border-radius: 6px;
+                width        : 300px;
+                height       : 38px;
+                padding-left : 10px;
+                color        : #666;
+            }
+        }
+
+        .category-clinic-icon {
+            position : absolute;
+            top      : 50%;
+            right    : 10px;
+            transform: translateY(-50%);
+        }
+
+
+
+        >.text {}
+    }
+
+    .category-clinic-body {
+        .category-clinic-heading {
+            color: #45c3d2;
+
+            text-transform: uppercase;
+            font-size     : 25px;
+            margin        : 30px 0 15px;
+        }
+
+        .category-clinic-item {
+            display       : flex;
+            align-items   : center;
+            padding-top   : 15px;
+            padding-bottom: 15px;
+            padding-left  : 15px;
+            border-top    : 1px solid rgba(#000, .1);
+            cursor        : pointer;
+            transition    : all .2s ease;
+
+            &:hover {
+                background-color: #f5f5f5;
+
+            }
+
+            .category-clinic-image {
+                width        : 80px;
+                height       : 80px;
+                border-radius: 50%;
+                margin-right : 10px;
+            }
+
+            .category-clinic-content {}
+
+            .category-clinic-title {
+                color    : #333;
+                font-size: 16px;
+
+                &:hover {
+                    color: #0d6efd;
+                }
+            }
+
+            .category-clinic-text {
+                color     : #666;
+                transition: all .22s;
+
+
+            }
+        }
+    }
+
+    .category-clinic-no-data {
+        font-size      : 30px;
+        display        : flex;
+        align-items    : center;
+        justify-content: center;
+        color          : #666;
+        text-transform : uppercase;
+        height         : 500px;
+    }
+}

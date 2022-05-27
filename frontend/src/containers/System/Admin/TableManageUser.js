@@ -1,46 +1,33 @@
 import React, { Component } from 'react'
-import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import * as actions from '../../../store/actions'
 import './TableManageUser.scss'
-
-import MarkdownIt from 'markdown-it'
-import MdEditor from 'react-markdown-editor-lite'
-// import style manually
-import 'react-markdown-editor-lite/lib/index.css'
-
-// Register plugins if required
-// MdEditor.use(YOUR_PLUGINS_HERE);
-
-// Initialize a markdown parser
-const mdParser = new MarkdownIt(/* Markdown-it options */)
-
-// Finish!
-function handleEditorChange({ html, text }) {
-    console.log('handleEditorChange', html, text)
-}
-
+import { getUserByRole } from '../../../services/userService'
+import { BsFillCaretDownFill, BsFillCaretUpFill } from 'react-icons/bs'
 class TableManageUser extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            usersRedux: []
+            arrUser: []
         }
     }
 
-    componentDidMount() {
-        this.props.fetchUserRedux()
+    async componentDidMount() {
+        let { dataUserFromParent } = this.props
+        this.setState({
+            arrUser: dataUserFromParent
+        })
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.listUsers !== this.props.listUsers) {
+    async componentDidUpdate(prevProps, prevState) {
+        if (prevProps.dataUserFromParent !== this.props.dataUserFromParent) {
             this.setState({
-                usersRedux: this.props.listUsers
+                arrUser: this.props.dataUserFromParent
             })
         }
     }
 
-    handleDeleteUser = (user) => {
+    handleDeleteUser = async (user) => {
         this.props.deleteUserRedux(user.id)
     }
 
@@ -48,58 +35,148 @@ class TableManageUser extends Component {
         this.props.handleEditUserFromParent(user)
     }
 
+    handleSortUser = (user, type) => {
+        if (type === 'email') {
+            console.log('check item', user[0].email.split('@')[0])
+            this.setState({
+                arrUser: user.sort((a, b) => a[type].split('@')[0].localeCompare(b[type].split('@')[0]))
+            })
+        } else if (type === 'address') {
+            this.setState({
+                arrUser: user.sort((a, b) => a[type].localeCompare(b[type]))
+            })
+        } else {
+            this.setState({
+                arrUser: user.sort((a, b) => a[type] - b[type])
+            })
+        }
+    }
+
+    handleReverseSortUser = (user, type) => {
+        if (type === 'email') {
+            this.setState({
+                arrUser: user.sort((a, b) => b[type].split('@')[0].localeCompare(a[type].split('@')[0]))
+            })
+        } else if (type === 'address') {
+            this.setState({
+                arrUser: user.sort((a, b) => b[type].localeCompare(a[type]))
+            })
+        } else {
+            this.setState({
+                arrUser: user.sort((a, b) => b[type] - a[type])
+            })
+        }
+    }
+
     render() {
-        let arrUsers = this.state.usersRedux
+        let { arrUser } = this.state
         return (
             <>
-                <table id='TableManageUser' className='mb-5'>
+                <table className='TableManageUser'>
                     <tbody>
                         <tr>
-                            <th>Email</th>
-                            <th>firstName</th>
-                            <th>lastName</th>
-                            <th>Address</th>
+                            <th>
+                                #
+                                <span className='btn-sort up' onClick={() => this.handleSortUser(arrUser, 'id')}>
+                                    <BsFillCaretUpFill />
+                                </span>
+                                <span
+                                    className='btn-sort down'
+                                    onClick={() => this.handleReverseSortUser(arrUser, 'id')}
+                                >
+                                    <BsFillCaretDownFill />
+                                </span>
+                            </th>
+                            <th>
+                                ID - Họ tên
+                                <span className='btn-sort up' onClick={() => this.handleSortUser(arrUser, 'id')}>
+                                    <BsFillCaretUpFill />
+                                </span>
+                                <span
+                                    className='btn-sort down'
+                                    onClick={() => this.handleReverseSortUser(arrUser, 'id')}
+                                >
+                                    <BsFillCaretDownFill />
+                                </span>
+                            </th>
+                            <th>
+                                Số điện thoại
+                                <span
+                                    className='btn-sort up'
+                                    onClick={() => this.handleSortUser(arrUser, 'phoneNumber')}
+                                >
+                                    <BsFillCaretUpFill />
+                                </span>
+                                <span
+                                    className='btn-sort down'
+                                    onClick={() => this.handleReverseSortUser(arrUser, 'phoneNumber')}
+                                >
+                                    <BsFillCaretDownFill />
+                                </span>
+                            </th>
+                            <th>
+                                Email
+                                <span className='btn-sort up' onClick={() => this.handleSortUser(arrUser, 'email')}>
+                                    <BsFillCaretUpFill />
+                                </span>
+                                <span
+                                    className='btn-sort down'
+                                    onClick={() => this.handleReverseSortUser(arrUser, 'email')}
+                                >
+                                    <BsFillCaretDownFill />
+                                </span>
+                            </th>
+                            <th>
+                                Address
+                                <span className='btn-sort up' onClick={() => this.handleSortUser(arrUser, 'address')}>
+                                    <BsFillCaretUpFill />
+                                </span>
+                                <span
+                                    className='btn-sort down'
+                                    onClick={() => this.handleReverseSortUser(arrUser, 'address')}
+                                >
+                                    
+                                    <BsFillCaretDownFill />
+                                </span>
+                            </th>
                             <th>Actions</th>
                         </tr>
-                        {arrUsers &&
-                            arrUsers.length > 0 &&
-                            arrUsers.map((item, index) => (
+                        {arrUser &&
+                            arrUser.length > 0 &&
+                            arrUser.map((item, index) => (
                                 <tr key={index}>
+                                    <td>
+                                        <div>{index + 1}</div>
+                                    </td>
+                                    <td>{`${item.id} - ${item?.lastName ? item.lastName : ''} ${item?.firstName}`}</td>
+                                    <td>{item.phoneNumber}</td>
                                     <td>{item.email}</td>
-                                    <td>{item.firstName}</td>
-                                    <td>{item.lastName}</td>
                                     <td>{item.address}</td>
                                     <td>
-                                        <button className='btn-edit' onClick={() => this.handleEditUser(item)}>
-                                            <i className='fas fa-pencil-alt'></i>
+                                        <button className='btn btn-edit' onClick={() => this.handleEditUser(item)}>
+                                            <i className='fas fa-pencil-alt' style={{ marginRight: '5px' }}></i>
+                                            Chỉnh sửa
                                         </button>
-                                        <button className='btn-delete' onClick={() => this.handleDeleteUser(item)}>
-                                            <i className='fas fa-trash'></i>
+                                        <button className='btn btn-delete' onClick={() => this.handleDeleteUser(item)}>
+                                            <i className='fas fa-trash' style={{ marginRight: '5px' }}></i>
+                                            Xóa
                                         </button>
                                     </td>
                                 </tr>
                             ))}
                     </tbody>
                 </table>
-                <MdEditor
-                    style={{ height: '500px' }}
-                    renderHTML={(text) => mdParser.render(text)}
-                    onChange={handleEditorChange}
-                />
             </>
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        listUsers: state.admin.users
-    }
+    return {}
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
         deleteUserRedux: (id) => dispatch(actions.deleteUser(id))
     }
 }

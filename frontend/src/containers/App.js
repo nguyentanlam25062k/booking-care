@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { ConnectedRouter as Router } from 'connected-react-router'
 import { history } from '../redux'
 import { ToastContainer } from 'react-toastify'
@@ -13,8 +13,6 @@ import Home from '../routes/Home'
 import Login from './Auth/Login'
 import System from '../routes/System'
 
-import { CustomToastCloseButton } from '../components/CustomToast'
-import ConfirmModal from '../components/ConfirmModal'
 import HomePage from './HomePage/HomePage'
 import CustomScrollbars from '../components/CustomScrollbars'
 import DetailDoctor from './Patient/Doctor/DetailDoctor'
@@ -24,6 +22,9 @@ import './App.scss'
 import VerifyEmail from './Patient/VerifyEmail'
 import DetailSpecialty from './Patient/Specialty/DetailSpecialty'
 import DetailClinic from './Patient/Clinic/DetailClinic'
+import CategoryDoctor from './Category/CategoryDoctor'
+import CategorySpecialty from './Category/CategorySpecialty'
+import CategoryClinic from './Category/CategoryClinic'
 
 class App extends Component {
     handlePersistorState = () => {
@@ -56,10 +57,17 @@ class App extends Component {
                                 <Switch>
                                     <Route path={path.HOME} exact component={Home} />
                                     <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
+
                                     <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                                     <Route path={'/doctor'} component={userIsAuthenticated(Doctor)} />
 
                                     <Route path={path.HOMEPAGE} component={HomePage} />
+
+                                    <Route path={'/category/doctor'} component={CategoryDoctor} />
+                                    <Route path={'/category/specialty'} component={CategorySpecialty} />
+                                    <Route path={'/category/clinic'} component={CategoryClinic} />
+                                    <Route path={'/category/:slug'} component={CategoryDoctor} />
+
                                     <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
                                     <Route path={path.DETAIL_SPECIALTY} component={DetailSpecialty} />
                                     <Route path={path.DETAIL_CLINIC} component={DetailClinic} />

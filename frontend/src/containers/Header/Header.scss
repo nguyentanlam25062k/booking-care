@@ -4,31 +4,64 @@
   z-index         : 99;
   display         : flex;
   justify-content : space-between;
-  background-color: $colormain;
-  color           : $common-text-color;
-  height          : 40px;
+  align-items     : center;
+  height          : 60px;
   position        : relative;
+  color           : #333;
+  background-color: #fff;
+  box-shadow      : 1px 1px 6px rgba(#000, .3);
+
+  .header-left {
+    .header-search {
+      display: flex;
+
+      input {
+        outline      : none;
+        height       : 40px;
+        border       : 1px solid rgba(#000, .1);
+        padding      : 15px;
+        border-radius: 5px 0 0 5px;
+        width        : 300px;
+        color        : #333;
+      }
+
+      button {
+        background-color: #1890ff;
+        min-width       : 70px;
+        height          : 40px;
+        outline         : none;
+        border          : none;
+        border-radius   : 0 5px 5px 0;
+        color           : #fff;
+        font-size       : 16px;
+      }
+    }
+  }
 
   .btn-logout {
-    color      : $common-text-color;
-    line-height: 40px;
-    height     : 40px;
+    color      : #6c757d;
+    line-height: 60px;
+    height     : 60px;
     padding    : 0 10px;
 
     &:hover {
-      background-color: darken($colormain, 5);
+      i {
+        font-size: $base-size + 3px;
+
+      }
     }
 
     i {
-      font-size: $base-size + 1px;
+      transition: all .2s ease;
+      font-size : $base-size + 1px;
 
     }
   }
 
   .header-avatar {
     display      : inline-block;
-    width        : 30px;
-    height       : 30px;
+    width        : 45px;
+    height       : 45px;
     margin-right : 10px;
     border-radius: 50%;
   }

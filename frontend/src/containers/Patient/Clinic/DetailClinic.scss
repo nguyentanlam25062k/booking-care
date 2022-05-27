@@ -51,6 +51,20 @@
 
   }
 
+  .detail-clinic-scroll {
+    display        : flex;
+    justify-content: center;
+    border-top     : 1px solid rgba(#000, .1);
+    padding        : 8px 0;
+
+    >div:nth-child(n) {
+      text-transform: uppercase;
+      margin-right  : 30px;
+      color         : #666;
+      cursor        : pointer;
+    }
+  }
+
   .detail-clinic-body {
     padding         : 15px 100px 0;
     background-color: #eee;
@@ -111,6 +125,24 @@
 
       }
     }
+
+  }
+
+  .detail-clinic-content {
+    >div:nth-child(n) {
+      margin-top: 30px;
+    }
+
+    .heading {
+      text-transform: uppercase;
+      font-weight   : bold;
+      color         : #337ab7;
+      border-bottom : 1px solid rgba(#000, .1);
+      margin-bottom : 30px;
+      padding-bottom: 10px;
+    }
+
+    .detail-clinic-intro {}
 
   }
 }

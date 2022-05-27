@@ -1,0 +1,45 @@
+.modal-notify-delete {
+    .modal-body {
+        padding      : unset;
+        margin       : unset;
+        box-shadow   : unset;
+        border-radius: unset;
+
+    }
+
+
+    .modal-notify {
+        &-icon {
+            font-size : 100px;
+            margin-top: 15px;
+            color     : rgba(#c82333, .9);
+        }
+
+        &-title {
+            color: #6c757d;
+        }
+
+        &-heading {
+            font-size    : 25px;
+            margin-top   : 15px;
+            margin-bottom: 15px;
+            color        : #6c757d;
+        }
+
+        &-text {
+            color    : #6c757d;
+            font-size: 16px;
+            width    : 400px;
+            margin   : 0 auto 15px;
+        }
+    }
+
+
+
+    .btn-delete {
+        background-color: #c82333;
+        border          : 1px solid #bd2130;
+    }
+
+
+}

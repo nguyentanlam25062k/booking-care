@@ -5,6 +5,7 @@ import Slider from 'react-slick'
 import { getAllSpecialty } from '../../../services/userService'
 import './Specialty.scss'
 import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 
 class Specialty extends Component {
     constructor(props) {
@@ -43,9 +44,11 @@ class Specialty extends Component {
                         <span className='title-section'>
                             <FormattedMessage id='home-page.specialty-popular' />
                         </span>
-                        <button className='btn-section'>
-                            <FormattedMessage id='home-page.more-info' />
-                        </button>
+                        <Link to='/category/specialty'>
+                            <button className='btn-section'>
+                                <FormattedMessage id='home-page.more-info' />
+                            </button>
+                        </Link>
                     </div>
                     <div className='section-body'>
                         <Slider {...this.props.settings}>

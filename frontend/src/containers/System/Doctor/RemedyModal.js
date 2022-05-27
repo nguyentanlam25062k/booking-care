@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
 import './RemedyModal.scss'
 import * as actions from '../../../store/actions'
-import { toast } from 'react-toastify'
 import { CommonUtils } from '../../../utils'
 
 class RemedyModal extends Component {
@@ -43,7 +41,7 @@ class RemedyModal extends Component {
         let file = data[0]
         if (file) {
             let base64 = await CommonUtils.getBase64(file)
-            let objectUrl = URL.createObjectURL(file)
+            // let objectUrl = URL.createObjectURL(file)
             this.setState({
                 imageBase64: base64
             })
@@ -55,7 +53,7 @@ class RemedyModal extends Component {
     }
 
     render() {
-        let { isOpenModal, closeRemedyModal, dataModal, sendRemedy } = this.props
+        let { isOpenModal, closeRemedyModal } = this.props
         return (
             <Modal isOpen={isOpenModal} className={'booking-modal-container'} size='lg' centered>
                 <div className='modal-header'>

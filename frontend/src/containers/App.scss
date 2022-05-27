@@ -1,5 +1,32 @@
 @import "../styles/common.scss";
 
+html body {
+    font-family: 'Roboto';
+
+}
+
 .form-group {
     margin-bottom: 1rem;
+}
+
+.manage-title {
+    font-weight: 500;
+    color      : #0d6efd;
+    font-size  : 30px;
+}
+
+.manage-heading {
+    font-size     : 25px;
+    text-transform: uppercase;
+    text-align    : center;
+    color         : #6c757d;
+}
+
+.py-15 {
+    padding: 15px 0;
+}
+
+.btn.btn-primary,
+.btn.btn-secondary {
+    min-width: 100px;
 }
